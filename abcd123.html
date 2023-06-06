@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sortable Table</title>
+  <style>
+    table {
+      border-collapse: collapse;
+    }
+    td {
+      border: 1px solid black;
+      padding: 5px;
+    }
+    .sortable-row td:first-child {
+      background-color: lightgray;
+    }
+  </style>
+</head>
+<body>
+
+<table id="myTable">
+  <tbody>
+    <tr>
+      <td class="sortable-row">A1</td>
+      <td class="sortable-row">A2</td>
+      <td class="sortable-row">A3</td>
+      <td class="sortable-row"><input name="option_attribute[1][name]" placeholder="box 1"></td>
+      <td class="sortable-row"><input name="option_attribute[2][name]" placeholder="box 2"></td>
+    </tr>
+    <tr>
+      <td class="sortable-row">B1</td>
+      <td class="sortable-row">B2</td>
+      <td class="sortable-row">B3</td>
+      <td class="sortable-row"><input name="option_attribute[3][name]" placeholder="box 3"></td>
+      <td class="sortable-row"><input name="option_attribute[4][name]" placeholder="box 4"></td>
+    </tr>
+    <tr>
+      <td class="sortable-row">C1</td>
+      <td class="sortable-row">C2</td>
+      <td class="sortable-row">C3</td>
+      <td class="sortable-row"><input name="option_attribute[5][name]" placeholder="box 5"></td>
+      <td class="sortable-row"><input name="option_attribute[6][name]" placeholder="box 6"></td>
+    </tr>
+    <tr>
+      <td class="sortable-row">D1</td>
+      <td class="sortable-row">D2</td>
+      <td class="sortable-row">D3</td>
+      <td class="sortable-row"><input name="option_attribute[7][name]" placeholder="box 7"></td>
+      <td class="sortable-row"><input name="option_attribute[8][name]" placeholder="box 8"></td>
+    </tr>
+  </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+  $(document).ready(function() {
+    $("#myTable tbody").sortable({
+      items: "tr",
+      start: function(event, ui) {
+        ui.item.data('start-index', ui.item.index());
+      },
+      update: function(event, ui) {
+        var fromIndex = ui.item.data('start-index');
+        var toIndex = ui.item.index();
+
+        // Swap positions of the first row (A1, A2, A3) with the second row (B1, B2, B3)
+        if (fromIndex === 0 && toIndex === 1) {
+          var row1 = $("#myTable tbody tr:nth-child(1)");
+          var row2 = $("#myTable tbody tr:nth-child(2)");
+
+          // Swap the content of cells in the first and second rows
+          row1.find("td:not(:first-child)").each(function(index) {
+            var temp = $(this).html();
+            $(this).html(row2.find("td:not(:first-child)").eq(index).html());
+            row2.find("td:not(:first-child)").eq(index).html(temp);
+          });
+
+          // Swap the content of input fields in the first and second rows
+          row1.find("td:not(:first-child) input").each(function(index) {
+            var temp = $(this).val();
+            $(this).val(row2.find("td:not(:first-child) input").eq(index).val());
+            row2.find("td:not(:first-child) input").eq(index).val(temp);
+          });
+
+          // Update option_attributes in input class for the swapped rows
+          var row1Input1 = row1.find("td:nth-child(4) input");
+          var row1Input2 = row1.find("td:nth-child(5) input");
+          var row2Input1 = row2.find("td:nth-child(4) input");
+          var row2Input2 = row2.find("td:nth-child(5) input");
+
+          var row1Input1Name = row1Input1.attr("name");
+          var row1Input2Name = row1Input2.attr("name");
+          var row2Input1Name = row2Input1.attr("name");
+          var row2Input2Name = row2Input2.attr("name");
+
+          // Update option_attribute[number][name] in input names
+          row1Input1.attr("name", row2Input1Name.replace(/\[(\d+)\]/, "[1]"));
+          row1Input2.attr("name", row2Input2Name.replace(/\[(\d+)\]/, "[2]"));
+          row2Input1.attr("name", row1Input1Name.replace(/\[(\d+)\]/, "[3]"));
+          row2Input2.attr("name", row1Input2Name.replace(/\[(\d+)\]/, "[4]"));
+        }
+
+        console.log("Selected Row: " + ui.item.find("td:first-child").text() + ", From: " + fromIndex + ", To: " + toIndex);
+      }
+    });
+
+    $(".sortable-row").sortable({
+      items: ".sortable-row",
+      axis: "y",
+      start: function(event, ui) {
+        ui.item.data('start-index', ui.item.index());
+      },
+      update: function(event, ui) {
+        var fromIndex = ui.item.data('start-index');
+        var toIndex = ui.item.index();
+
+        console.log("Selected Box: " + ui.item.find("td:nth-child(3)").text() + ", From: " + fromIndex + ", To: " + toIndex);
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
