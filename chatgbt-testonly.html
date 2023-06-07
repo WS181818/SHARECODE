@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sortable Table</title>
+  <style>
+    table {
+      border-collapse: collapse;
+    }
+    td {
+      border: 1px solid black;
+      padding: 5px;
+    }
+    .sortable-row td:first-child {
+      background-color: lightgray;
+    }
+  </style>
+</head>
+<body>
+
+<table id="myTable">
+  <tbody>
+    <tr>
+      <td class="sortable-row">Row 1</td>
+      <td class="sortable-row"><input name="option_attribute[1][name]" placeholder="box 1"></td>
+    </tr>
+    <tr>
+      <td class="sortable-row">Row 2</td>
+      <td class="sortable-row"><input name="option_attribute[2][name]" placeholder="box 2"></td>
+    </tr>
+    <tr>
+      <td class="sortable-row">Row 3</td>
+      <td class="sortable-row"><input name="option_attribute[3][name]" placeholder="box 3"></td>
+    </tr>
+    <tr>
+      <td class="sortable-row">Row 4</td>
+      <td class="sortable-row"><input name="option_attribute[4][name]" placeholder="box 4"></td>
+    </tr>
+  </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+  $(document).ready(function() {
+    $("#myTable tbody").sortable({
+      items: "tr",
+      start: function(event, ui) {
+        ui.item.data('start-index', ui.item.index());
+      },
+      update: function(event, ui) {
+        var fromIndex = ui.item.data('start-index');
+        var toIndex = ui.item.index();
+
+        // Update input names for sortable rows
+        $("#myTable tbody tr").each(function(index) {
+          var row = $(this);
+          var inputField = row.find("td:nth-child(2)").find("input");
+          var currentName = inputField.attr("name");
+          var newName = currentName.replace(/\[\d+\]/, "[" + (index + 1) + "]");
+          inputField.attr("name", newName);
+
+          // Update display name of column 2 based on sequence
+          var displayName = row.find("td:nth-child(2)").find("input").attr("placeholder");
+          var newDisplayName = displayName.replace(/\d+/, index + 1);
+          row.find("td:nth-child(2)").find("input").attr("placeholder", newDisplayName);
+        });
+
+        console.log("Selected Row: " + ui.item.find("td:first-child").text() + ", From: " + fromIndex + ", To: " + toIndex);
+      }
+    });
+
+    $(".sortable-row").sortable({
+      items: ".sortable-row",
+      axis: "y",
+      start: function(event, ui) {
+        ui.item.data('start-index', ui.item.index());
+      },
+      update: function(event, ui) {
+        var fromIndex = ui.item.data('start-index');
+        var toIndex = ui.item.index();
+
+        console.log("Selected Box: " + ui.item.find("td:nth-child(2)").find("input").attr("placeholder") + ", From: " + fromIndex + ", To: " + toIndex);
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
