@@ -16,28 +16,33 @@
   </style>
 </head>
 <body>
-
+<form method="post" action="chatgbt-testonly.html">
 <table id="myTable">
   <tbody>
     <tr>
       <td class="sortable-row">Row 1</td>
-      <td class="sortable-row"><input name="option_attribute[1][name]" placeholder="box 1"></td>
+      <td class="sortable-row"><input name="option_attribute[1][name]" value="http://www.google.com/"></td>
+      <td class="sortable-row"><input name="option_attribute[1][status]" value="1"></td>
     </tr>
     <tr>
       <td class="sortable-row">Row 2</td>
-      <td class="sortable-row"><input name="option_attribute[2][name]" placeholder="box 2"></td>
+      <td class="sortable-row"><input name="option_attribute[2][name]" value="http://www.yahoo.com/"></td>
+      <td class="sortable-row"><input name="option_attribute[2][status]" value="1"></td>
     </tr>
     <tr>
       <td class="sortable-row">Row 3</td>
-      <td class="sortable-row"><input name="option_attribute[3][name]" placeholder="box 3"></td>
+      <td class="sortable-row"><input name="option_attribute[3][name]" value="http://www.facebook.com/"></td>
+      <td class="sortable-row"><input name="option_attribute[3][status]" value="0"></td>
     </tr>
     <tr>
       <td class="sortable-row">Row 4</td>
-      <td class="sortable-row"><input name="option_attribute[4][name]" placeholder="box 4"></td>
+      <td class="sortable-row"><input name="option_attribute[4][name]" value="http://www.instagram.com/"></td>
+      <td class="sortable-row"><input name="option_attribute[4][status]" value="0"></td>
     </tr>
   </tbody>
 </table>
-
+<button type="submit">Submit</button>
+</form>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
@@ -53,16 +58,23 @@
 
         // Update input names for sortable rows
         $("#myTable tbody tr").each(function(index) {
-          var row = $(this);
+           var row = $(this);
           var inputField = row.find("td:nth-child(2)").find("input");
           var currentName = inputField.attr("name");
           var newName = currentName.replace(/\[\d+\]/, "[" + (index + 1) + "]");
           inputField.attr("name", newName);
 
+          var inputField = row.find("td:nth-child(3)").find("input");
+          var currentName = inputField.attr("name");
+          var newName = currentName.replace(/\[\d+\]/, "[" + (index + 1) + "]");
+          inputField.attr("name", newName);
+
+
           // Update display name of column 2 based on sequence
-          var displayName = row.find("td:nth-child(2)").find("input").attr("placeholder");
-          var newDisplayName = displayName.replace(/\d+/, index + 1);
-          row.find("td:nth-child(2)").find("input").attr("placeholder", newDisplayName);
+          // var displayName = row.find("td:nth-child(2)").find("input").attr("value");
+          // var newDisplayName = displayName.replace(/\d+/, index + 1);
+          // row.find("td:nth-child(2)").find("input").attr("value", newDisplayName);
+          // console.log(newDisplayName);
         });
 
         console.log("Selected Row: " + ui.item.find("td:first-child").text() + ", From: " + fromIndex + ", To: " + toIndex);
@@ -83,6 +95,15 @@
       }
     });
   });
+
+  function updateInputNameAttribute($this, $no)
+  {
+    var row = $this;
+    var inputField = row.find("td:nth-child("+$no+")").find("input");
+    var currentName = inputField.attr("name");
+    var newName = currentName.replace(/\[\d+\]/, "[" + (index + 1) + "]");
+    inputField.attr("name", newName);
+  }
 </script>
 
 </body>
