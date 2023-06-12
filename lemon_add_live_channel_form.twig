@@ -1,0 +1,1129 @@
+{{ header }}
+<style type="text/css">
+    .control-css {
+        display: none;
+    }
+</style>
+<link href="view/stylesheet/build.css" type="text/css" rel="stylesheet"/>
+{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="pull-right">
+                <button type="submit" data-toggle="tooltip" form="form-product" title="{{ button_save }}"
+                        class="btn btn-primary"><i class="fa fa-save"></i></button>
+                <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i
+                            class="fa fa-reply"></i></a></div>
+            <h1>编辑信息</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid"> {% if error_warning %}
+            <div class="alert alert-danger alert-dismissible"><i
+                        class="fa fa-exclamation-circle"></i> {{ error_warning }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_form }} <em
+                            style="color:red;">（数据库表为：）</em></h3>
+            </div>
+            <div class="panel-body">
+
+                <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-product"
+                      class="form-horizontal">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab-general" data-toggle="tab">{{ tab_general }}</a></li>
+                        <li><a href="#tab-data" data-toggle="tab">{{ tab_data }}</a></li>
+                        <li><a href="#tab-links" data-toggle="tab">{{ tab_links }}</a></li>
+                        <li><a href="#tab-attribute" data-toggle="tab">直播源链接设置</a></li>
+
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab-general">
+                            {% for language in languages %}
+
+                                <div class="tab-pane" id="language{{ language.language_id }}">
+                                    <div class="form-group required">
+                                        <label class="col-sm-2 control-label"
+                                               for="input-channelName{{ language.language_id }}"><a
+                                                    href="#language{{ language.language_id }}" data-toggle="tab"><img
+                                                        src="language/{{ language.code }}/{{ language.code }}.png"
+                                                        title="{{ language.name }}"/> {{ language.name }}</a></label>
+                                        <div class="col-sm-10">
+                                            <input type="text" name="data[{{ language.language_id }}][channelName]"
+                                                   value="{% for getLiveChannelDescKey,getLiveChannelDescVal in getLiveChannelDescById %}{% if language.language_id == getLiveChannelDescVal.language_id %}{{ getLiveChannelDescVal.channelName }}{% endif %}{% endfor %}"
+                                                   placeholder="" id="input-channelName{{ language.language_id }}"
+                                                   class="form-control"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                        <div class="tab-pane" id="tab-data">
+                            <!--22222222222 channel category-->
+                            <div class="form-group required">
+                                <label class="col-sm-2 control-label" for="input-live_categorys">多个分类选择设置：</label>
+                                <div class="col-sm-10">
+                                    <select name="live_categorys[]" id="input-live_categorys" class="form-control"
+                                            multiple="multiple" size="12">
+                                        {% for categoryskey,categorysval in lemon_live_categorys_list_data %}
+                                            <option value="{{ categorysval.huaxida_category_id }}-{{ categorysval.category_sort }}"
+                                                    {{ categorysval.selected }}
+                                            >
+                                                {{ categorysval.categoryName }}
+                                                {% if categorysval.comments %}
+                                                    ({{ categorysval.comments }})
+                                                {% endif %}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tab-links">
+                            <!--3333333333333333333333 data (关联)-->
+                            <div class="tab-pane" id="language123111">
+
+                                {% for productkey,productval in product_info %}
+                                    {% if productkey == 'category_id' %}
+                                    {% elseif productkey == 'createTime' %}
+                                        <input type="hidden" name="gooddata[{{ productkey }}]" value="{{ productval }}">
+                                    {% elseif productkey == 'channelType' %}
+
+                                        <div class="form-group required">
+                                            <label class="col-sm-2 control-label"
+                                                   for="input-{{ productkey }}">频道类型</label>
+                                            <div class="col-sm-10">
+                                                <select name="gooddata[{{ productkey }}]" id="input-huaxida_category_id"
+                                                        class="form-control">
+                                                    <option value="1" {% if productval == 1 %}selected{% endif %}>直播
+                                                    </option>
+                                                    <option value="2" {% if productval == 2 %}selected{% endif %}>轮播
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    {% elseif productkey == 'time_shift_url' %}
+                                        <div class="form-group required">
+                                            <label class="col-sm-2 control-label"
+                                                   for="input-{{ productkey }}">时移链接</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" name="gooddata[{{ productkey }}]"
+                                                       value="{{ productval }}" placeholder=""
+                                                       id="input-{{ productkey }}" class="form-control"/>
+                                            </div>
+                                        </div>
+                                        <!-- 时移时长 -->
+                                    {% elseif productkey == 'time_shift_time' %}
+                                        <div class="form-group required">
+                                            <label class="col-sm-2 control-label"
+                                                   for="input-{{ productkey }}">时移时长</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" name="gooddata[{{ productkey }}]"
+                                                       value="{{ productval }}" placeholder=""
+                                                       id="input-{{ productkey }}" class="form-control"/>
+                                            </div>
+                                        </div>
+                                        <!-- 轮训失效次数 -->
+                                    {% elseif productkey == 'rotation_time' %}
+                                        <div class="form-group required">
+                                            <label class="col-sm-2 control-label"
+                                                   for="input-{{ productkey }}">轮训失效次数</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" name="gooddata[{{ productkey }}]"
+                                                       value="{{ productval }}" placeholder=""
+                                                       id="input-{{ productkey }}" class="form-control"/>
+                                            </div>
+                                        </div>
+                                        <!-- 最新轮训失效时间 -->
+                                    {% elseif productkey == 'date_failed' %}
+                                        <div class="form-group required">
+                                            <label class="col-sm-2 control-label"
+                                                   for="input-{{ productkey }}">最新轮训失效时间</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" name="gooddata[{{ productkey }}]"
+                                                       value="{{ productval }}" placeholder=""
+                                                       id="input-{{ productkey }}" readonly class="form-control"/>
+                                            </div>
+                                        </div>
+                                        <!-- 上传文件 -->
+                                    {% elseif productkey == 'logo' %}
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label"
+                                                   for="input-{{ productkey }}">Logo</label>
+                                            <div class="col-sm-10">
+                                                <button type="button" class="layui-btn layui-upload-btn">
+                                                    <i class="layui-icon">&#xe67c;</i>上传图片
+                                                </button>
+                                                <br/>
+                                                <img class="layui-upload-image"
+                                                     src="{% if productval %}{{ productval }}{% endif %}" alt=""
+                                                     title="" data-placeholder="{{ placeholder }}"/>
+                                                <input type="hidden" class="form-control"
+                                                       name="gooddata[{{ productkey }}]" value="{{ productval }}"
+                                                       title=""/>
+                                            </div>
+                                        </div>
+                                    {% elseif productkey == 'scheduleId' %}
+                                        <div class="form-group required">
+                                            <label class="col-sm-2 control-label"
+                                                   for="input-{{ productkey }}">{{ productkey }}</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" readonly name="gooddata[{{ productkey }}]"
+                                                       value="{{ productval }}" placeholder=""
+                                                       id="input-{{ productkey }}" class="form-control"/>
+                                            </div>
+                                        </div>
+                                        <!-- 上下架 -->
+                                    {% elseif productkey == 'status' %}
+                                        <div class="form-group required">
+                                            <label class="col-sm-2 control-label"
+                                                   for="input-{{ productkey }}">状态</label>
+
+                                            <div class="col-sm-10">
+
+                                                <!-- 添加样式 -->
+                                                <div class="radio radio-info radio-inline"
+                                                     style="padding-top: 6px;width: 8%;">
+                                                    <input type="radio" id="status1" value="1"
+                                                           {% if productval == 1 %}checked{% endif %}
+                                                           name="gooddata[{{ productkey }}]">
+                                                    <label for="status1"> 上架 </label>
+                                                </div>
+
+                                                <div class="radio radio-inline" style="padding-top: 6px;width: 8%;">
+                                                    <input type="radio" id="status0" value="0"
+                                                           {% if productval == 0 %}checked{% endif %}
+                                                           name="gooddata[{{ productkey }}]">
+                                                    <label for="status0"> 下架 </label>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <!-- 分类排序 -->
+                                    {% elseif productkey == 'category_sort' %}
+                                        <div class="form-group required">
+                                            <label class="col-sm-2 control-label"
+                                                   for="input-{{ productkey }}">分类排序</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" name="gooddata[{{ productkey }}]"
+                                                       value="{{ productval }}" placeholder=""
+                                                       id="input-{{ productkey }}" class="form-control"/>
+                                            </div>
+                                        </div>
+                                        <!-- 重点频道 -->
+                                    {% elseif productkey == 'is_focus' %}
+                                        <div class="form-group required">
+                                            <label class="col-sm-2 control-label"
+                                                   for="input-{{ productkey }}">重点频道</label>
+                                            <div class="col-sm-10">
+
+                                                <!-- 添加样式 -->
+                                                <div class="radio radio-info radio-inline"
+                                                     style="padding-top: 6px;width: 6%;">
+                                                    <input type="radio" id="inlineRadioOnFocus1" value="1"
+                                                           {% if productval == 1 %}checked{% endif %}
+                                                           name="gooddata[{{ productkey }}]">
+                                                    <label for="inlineRadioOnFocus1"> 是 </label>
+                                                </div>
+
+                                                <div class="radio radio-inline" style="padding-top: 6px;width: 6%;">
+                                                    <input type="radio" id="inlineRadioOffFocus1" value="0"
+                                                           {% if productval == 0 %}checked{% endif %}
+                                                           name="gooddata[{{ productkey }}]">
+                                                    <label for="inlineRadioOffFocus1"> 否 </label>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <!-- 上下架行为 -->
+                                    {% elseif productkey == 'unshelve' %}
+                                        <div class="form-group required">
+                                            <label class="col-sm-2 control-label"
+                                                   for="input-{{ productkey }}">下架行为</label>
+
+                                            <div class="col-sm-10">
+
+                                                <!-- 添加样式 -->
+                                                <!-- <div class="radio radio-info radio-inline" style="padding-top: 6px;width: 10%;">
+                                        <input type="radio" id="unshelve1" value="1" {% if productval == 1 %}checked{% endif %} name="gooddata[{{ productkey }}]" >
+                                        <label for="unshelve1"> 人工下架 </label>
+                                    </div>
+                                    <div class="radio radio-info radio-inline" style="padding-top: 6px;width: 10%;">
+                                        <input type="radio" id="unshelve2" value="2" {% if productval == 2 %}checked{% endif %} name="gooddata[{{ productkey }}]" >
+                                        <label for="unshelve2"> 机器下架 </label>
+                                    </div>
+
+                                    <div class="radio radio-inline" style="padding-top: 6px;width: 10%;">
+                                        <input type="radio" id="unshelve0" value="0" {% if productval == 0 %}checked{% endif %} name="gooddata[{{ productkey }}]">
+                                        <label for="unshelve0"> 无 </label>
+                                    </div> -->
+
+                                                <div class="checkbox checkbox-primary checkbox-inline">
+                                                    <input id="unshelve1" class="styled" value="1" type="radio"
+                                                           name="gooddata[{{ productkey }}]"
+                                                           {% if productval == 1 %}checked{% endif %}>
+                                                    <label for="unshelve1">
+                                                        人工下架
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox checkbox-primary checkbox-inline">
+                                                    <input id="unshelve2" class="styled" value="2" type="radio"
+                                                           name="gooddata[{{ productkey }}]"
+                                                           {% if productval == 2 %}checked{% endif %}>
+                                                    <label for="unshelve2">
+                                                        机器下架
+                                                    </label>
+                                                </div>
+                                                <div class="checkbox checkbox-primary checkbox-inline">
+                                                    <input id="unshelve0" class="styled" value="0" type="radio"
+                                                           name="gooddata[{{ productkey }}]"
+                                                           {% if productval == 0 %}checked{% endif %}>
+                                                    <label for="unshelve0">
+                                                        无
+                                                    </label>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <div class="form-group required">
+                                            <label class="col-sm-2 control-label"
+                                                   for="input-{{ productkey }}">{{ productkey }}</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" name="gooddata[{{ productkey }}]"
+                                                       value="{{ productval }}" placeholder=""
+                                                       id="input-{{ productkey }}" class="form-control"/>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+
+                            </div>
+                            <!--3333333333333333333333-->
+                        </div>
+                        <div class="tab-pane" id="tab-attribute">
+                            <div class="table-responsive">
+                                <button type="button"
+                                        id="show-language-title"
+                                        class="layui-btn"
+                                        style="width: 15%;margin-bottom: 10px">
+                                    <i class="fa fa-list" aria-hidden="true"></i>
+                                    显示或隐藏多语言自定名称
+                                </button>
+                                <table id="attribute" class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <td class="text-left">供应商</td>
+                                        <!-- <td class="text-left">排序</td> -->
+                                        <td class="text-left">状态</td>
+                                        <td class="text-left">是否轮训上下架</td>
+                                        <td class="text-left">直播源链接标题</td>
+                                        <td class="text-left" >直播源链接值</td>
+                                        <td></td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    {% set attribute_row = 1 %}
+                                    {% for product_attribute in getLiveChannelUrlById %}
+                                        <tr id="attribute-row{{ attribute_row }}">
+                                            <td class="text-left sortable-row">
+                                                <div class="input-group">
+                                                    <input name="product_attribute[{{ attribute_row }}][supplier]"
+                                                           value="{{ product_attribute.supplier }}" placeholder="供应商"
+                                                           class="form-control">
+                                                </div>
+                                            </td>
+                                            <!-- <td class="text-left">
+                                                <div class="input-group">
+                                                    <input name="product_attribute[{{ attribute_row }}][sort]"
+                                                           value="{{ product_attribute.sort }}" placeholder="源排序"
+                                                           class="form-control">
+                                                </div>
+                                            </td> -->
+                                            <td class="sortable-row">
+                                                <!-- 添加样式 -->
+                                                <div class="radio radio-info">
+                                                    <input type="radio" id="status-radio-on-{{ attribute_row }}"
+                                                           value="1"
+                                                           {% if product_attribute.status == 1 %}checked{% endif %}
+                                                           name="product_attribute[{{ attribute_row }}][status]">
+                                                    <label for="status-radio-on-{{ attribute_row }}"> 上架 </label>
+                                                </div>
+
+                                                <div class="radio">
+                                                    <input type="radio" id="status-radio-off-{{ attribute_row }}"
+                                                           value="0"
+                                                           {% if product_attribute.status == 0 %}checked{% endif %}
+                                                           name="product_attribute[{{ attribute_row }}][status]">
+                                                    <label for="status-radio-off-{{ attribute_row }}"> 下架 </label>
+                                                </div>
+                                            </td>
+                                            <td class="sortable-row">
+                                                <!-- 轮序添加样式 -->
+                                                <div class="radio radio-info">
+                                                    <input type="radio" id="is_rotation-radio-on-{{ attribute_row }}"
+                                                           value="1"
+                                                           {% if product_attribute.is_rotation == 1 %}checked{% endif %}
+                                                           name="product_attribute[{{ attribute_row }}][is_rotation]">
+                                                    <label for="is_rotation-radio-on-{{ attribute_row }}"> 是 </label>
+                                                </div>
+
+                                                <div class="radio">
+                                                    <input type="radio" id="is_rotation-radio-off-{{ attribute_row }}"
+                                                           value="0"
+                                                           {% if product_attribute.is_rotation == 0 %}checked{% endif %}
+                                                           name="product_attribute[{{ attribute_row }}][is_rotation]">
+                                                    <label for="is_rotation-radio-off-{{ attribute_row }}"> 否 </label>
+                                                </div>
+                                            </td>
+
+                                            <td class="text-left sortable-row" style="width: 20%;">
+                                                {% for language in languages %}
+                                                   <div {% if language.language_id > 4 %}class="control-show control-css"{% endif %}>
+                                                    {{ language.name }}：<input type="text"
+                                                                                                          name="product_attribute[{{ attribute_row }}][title][{{ language.language_id }}]" value="{% for lang_key,lang_title in product_attribute.language_title %}{% if lang_key == language.language_id %}{% if lang_title != '' %}{{ lang_title }}{% elseif language.language_id == '4' %}Source {{ attribute_row }}{% endif %}{% endif %}{% endfor %}"
+                                                                                                          data-value="{% for lang_key,lang_title in product_attribute.language_title %}{% if lang_key == language.language_id %}{% if lang_title != '' %}{{ lang_title }}{% elseif language.language_id == '4' %}Source {{ attribute_row }}{% else %}源{{ attribute_row }}{% endif %}{% endif %}{% endfor %}"
+                                                                                                          placeholder=""
+                                                                               class="form-control source-input"/></div>
+                                                {% endfor %}
+                                                <input type="hidden"
+                                                       name="product_attribute[{{ attribute_row }}][category_id]"
+                                                       value="{{ product_attribute.category_id }}"/>
+                                            </td>
+                                            <td class="text-left sortable-row">
+                                                <div class="input-group">
+                                                    <textarea cols="80" name="product_attribute[{{ attribute_row }}][url]"
+                                                              placeholder="请输入直播源链接"
+                                                              class="form-control">{{ product_attribute.url }}</textarea>
+                                                </div>
+                                            </td>
+                                            <td class="text-right sortable-row">
+                                                <button type="button"
+                                                        onclick="$('#attribute-row{{ attribute_row }}').remove();"
+                                                        data-toggle="tooltip" title="{{ button_remove }}"
+                                                        class="btn btn-danger"><i class="fa fa-minus-circle"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        {% set attribute_row = attribute_row + 1 %}
+                                    {% endfor %}
+                                    </tbody>
+
+                                    <tfoot>
+                                    <tr>
+                                        <td colspan="5"></td>
+                                        <td class="text-right">
+                                            <button type="button" onclick="addAttribute();" data-toggle="tooltip"
+                                                    title="{{ button_attribute_add }}" class="btn btn-primary"><i
+                                                        class="fa fa-plus-circle"></i></button>
+                                        </td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <link href="view/javascript/codemirror/lib/codemirror.css" rel="stylesheet"/>
+    <link href="view/javascript/codemirror/theme/monokai.css" rel="stylesheet"/>
+    <script type="text/javascript" src="view/javascript/codemirror/lib/codemirror.js"></script>
+    <script type="text/javascript" src="view/javascript/codemirror/lib/xml.js"></script>
+    <script type="text/javascript" src="view/javascript/codemirror/lib/formatting.js"></script>
+    <script type="text/javascript" src="view/javascript/summernote/summernote.js"></script>
+    <link href="view/javascript/summernote/summernote.css" rel="stylesheet"/>
+    <script type="text/javascript" src="view/javascript/summernote/summernote-image-attributes.js"></script>
+    <script type="text/javascript" src="view/javascript/summernote/opencart.js"></script>
+    <script type="text/javascript">
+        let show = false;
+        $('#show-language-title').click(function() {
+            if (show) {
+                $('.control-show').addClass('control-css');
+                show = false;
+            } else {
+                $('.control-show').removeClass('control-css');
+                show = true;
+            }
+        });
+    </script>
+    <script type="text/javascript">
+        <!--
+        // Manufacturer
+        $('input[name=\'manufacturer\']').autocomplete({
+            'source': function (request, response) {
+                $.ajax({
+                    url: 'index.php?route=catalog/manufacturer/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+                    dataType: 'json',
+                    success: function (json) {
+                        json.unshift({
+                            manufacturer_id: 0,
+                            name: '{{ text_none }}'
+                        });
+
+                        response($.map(json, function (item) {
+                            return {
+                                label: item['name'],
+                                value: item['manufacturer_id']
+                            }
+                        }));
+                    }
+                });
+            },
+            'select': function (item) {
+                $('input[name=\'manufacturer\']').val(item['label']);
+                $('input[name=\'manufacturer_id\']').val(item['value']);
+            }
+        });
+
+        // Category
+        $('input[name=\'category\']').autocomplete({
+            'source': function (request, response) {
+                $.ajax({
+                    url: 'index.php?route=catalog/category/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+                    dataType: 'json',
+                    success: function (json) {
+                        response($.map(json, function (item) {
+                            return {
+                                label: item['name'],
+                                value: item['category_id']
+                            }
+                        }));
+                    }
+                });
+            },
+            'select': function (item) {
+                $('input[name=\'category\']').val('');
+
+                $('#product-category' + item['value']).remove();
+
+                $('#product-category').append('<div id="product-category' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="product_category[]" value="' + item['value'] + '" /></div>');
+            }
+        });
+
+        $('#product-category').delegate('.fa-minus-circle', 'click', function () {
+            $(this).parent().remove();
+        });
+
+        // Filter
+        $('input[name=\'filter\']').autocomplete({
+            'source': function (request, response) {
+                $.ajax({
+                    url: 'index.php?route=catalog/filter/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+                    dataType: 'json',
+                    success: function (json) {
+                        response($.map(json, function (item) {
+                            return {
+                                label: item['name'],
+                                value: item['filter_id']
+                            }
+                        }));
+                    }
+                });
+            },
+            'select': function (item) {
+                $('input[name=\'filter\']').val('');
+
+                $('#product-filter' + item['value']).remove();
+
+                $('#product-filter').append('<div id="product-filter' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="product_filter[]" value="' + item['value'] + '" /></div>');
+            }
+        });
+
+        $('#product-filter').delegate('.fa-minus-circle', 'click', function () {
+            $(this).parent().remove();
+        });
+
+        // Downloads
+        $('input[name=\'download\']').autocomplete({
+            'source': function (request, response) {
+                $.ajax({
+                    url: 'index.php?route=catalog/download/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+                    dataType: 'json',
+                    success: function (json) {
+                        response($.map(json, function (item) {
+                            return {
+                                label: item['name'],
+                                value: item['download_id']
+                            }
+                        }));
+                    }
+                });
+            },
+            'select': function (item) {
+                $('input[name=\'download\']').val('');
+
+                $('#product-download' + item['value']).remove();
+
+                $('#product-download').append('<div id="product-download' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="product_download[]" value="' + item['value'] + '" /></div>');
+            }
+        });
+
+        $('#product-download').delegate('.fa-minus-circle', 'click', function () {
+            $(this).parent().remove();
+        });
+
+        // Related
+        $('input[name=\'related\']').autocomplete({
+            'source': function (request, response) {
+                $.ajax({
+                    url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+                    dataType: 'json',
+                    success: function (json) {
+                        response($.map(json, function (item) {
+                            return {
+                                label: item['name'],
+                                value: item['product_id']
+                            }
+                        }));
+                    }
+                });
+            },
+            'select': function (item) {
+                $('input[name=\'related\']').val('');
+
+                $('#product-related' + item['value']).remove();
+
+                $('#product-related').append('<div id="product-related' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="product_related[]" value="' + item['value'] + '" /></div>');
+            }
+        });
+
+        $('#product-related').delegate('.fa-minus-circle', 'click', function () {
+            $(this).parent().remove();
+        });
+        //--></script>
+    <script type="text/javascript"><!--
+        var attribute_row = '{{ attribute_row }}';
+
+        function addAttribute() {
+            attribute_row = parseInt(attribute_row);
+            html = '<tr id="attribute-row' + attribute_row + '">';
+
+            html += '  <td class="text-left">';
+            html += '<div class="input-group"><input name="product_attribute[' + attribute_row + '][supplier]"  placeholder="请输入直播源链接" class="form-control"></div>';
+            html += '  </td>';
+            // html += '  <td class="text-left">';
+            // html += '<div class="input-group"><input name="product_attribute[' + attribute_row + '][sort]"  placeholder="源排序" class="form-control"></div>';
+            // html += '  </td>';
+            html += ' <td>\n' +
+                '                        <div class="radio radio-info" >\n' +
+                '                            <input type="radio" id="status-radio-on-' + attribute_row + '" value="1" {% if product_attribute.status == 1 %}checked{% endif %} name="product_attribute[' + attribute_row + '][status]" >\n' +
+                '                            <label for="status-radio-on-' + attribute_row + '"> 上架 </label>\n' +
+                '                        </div>\n' +
+                '\n' +
+                '                        <div class="radio" >\n' +
+                '                            <input type="radio" id="status-radio-off-' + attribute_row + '" value="0" {% if product_attribute.status == 0 %}checked{% endif %} name="product_attribute[' + attribute_row + '][status]">\n' +
+                '                            <label for="status-radio-off-' + attribute_row + '"> 下架 </label>\n' +
+                '                        </div>' +
+                '     </td>';
+            // is_rotation
+            html += ' <td>\n' +
+                '                        <div class="radio radio-info" >\n' +
+                '                            <input type="radio" id="is_rotation-radio-on-' + attribute_row + '" value="1" {% if product_attribute.is_rotation == 1 %}checked{% endif %} name="product_attribute[' + attribute_row + '][is_rotation]" >\n' +
+                '                            <label for="is_rotation-radio-on-' + attribute_row + '"> 是 </label>\n' +
+                '                        </div>\n' +
+                '\n' +
+                '                        <div class="radio" >\n' +
+                '                            <input type="radio" id="is_rotation-radio-off-' + attribute_row + '" value="0" {% if product_attribute.is_rotation == 0 %}checked{% endif %} name="product_attribute[' + attribute_row + '][is_rotation]">\n' +
+                '                            <label for="is_rotation-radio-off-' + attribute_row + '"> 否 </label>\n' +
+                '                        </div>' +
+                '     </td>';
+            html += '  <td class="text-left" style="width: 20%;">';
+
+            {% for language in languages %}
+            html += '<div {% if language.language_id > 4 %}class="control-show control-css"{% endif %}>{{ language.name }}：<input type="text" name="product_attribute[' + attribute_row + '][title][{{ language.language_id }}]" value="{% if language.language_id == '1' %}源' + attribute_row + '{% elseif language.language_id == '4' %}Source ' + attribute_row + '{% endif %}" data-value="{% if language.language_id == '
+    1' %}源' + attribute_row + '{% elseif language.language_id == '
+    4' %}Source ' + attribute_row + '{% endif %}" placeholder="" class="form-control source-input" /></div>';
+            {% endfor %}
+
+            html += '<input type="hidden" name="product_attribute[' + attribute_row + '][category_id]" value="" /></td>';
+            html += '  <td class="text-left">';
+            //html += '<div class="input-group"><span class="input-group-addon">type:</span><textarea name="product_attribute[' + attribute_row + '][type]" rows="2" placeholder="请输入清晰度auto,1080p,720p,576P，360p默认auto" class="form-control"></textarea></div>';
+            html += '<div class="input-group"><textarea name="product_attribute[' + attribute_row + '][url]" cols="80"  placeholder="请输入直播源链接" class="form-control"></textarea></div>';
+            html += '  </td>';
+            html += '  <td class="text-right"><button type="button" onclick="$(\'#attribute-row' + attribute_row + '\').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+            html += '</tr>';
+
+            $('#attribute tbody').append(html);
+
+            //attributeautocomplete(attribute_row);
+            attribute_row++;
+        }
+
+        function attributeautocomplete(attribute_row) {
+            $('input[name=\'product_attribute[' + attribute_row + '][name]\']').autocomplete({
+                'source': function (request, response) {
+                    $.ajax({
+                        url: 'index.php?route=catalog/attribute/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+                        dataType: 'json',
+                        success: function (json) {
+                            response($.map(json, function (item) {
+                                return {
+                                    category: item.attribute_group,
+                                    label: item.name,
+                                    value: item.attribute_id
+                                }
+                            }));
+                        }
+                    });
+                },
+                'select': function (item) {
+                    $('input[name=\'product_attribute[' + attribute_row + '][name]\']').val(item['label']);
+                    $('input[name=\'product_attribute[' + attribute_row + '][attribute_id]\']').val(item['value']);
+                }
+            });
+        }
+
+        $('#attribute tbody tr').each(function (index, element) {
+            attributeautocomplete(index);
+        });
+        //--></script>
+    <script type="text/javascript"><!--
+        var option_row = {{ option_row }};
+
+        $('input[name=\'option\']').autocomplete({
+            'source': function (request, response) {
+                $.ajax({
+                    url: 'index.php?route=catalog/option/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+                    dataType: 'json',
+                    success: function (json) {
+                        response($.map(json, function (item) {
+                            return {
+                                category: item['category'],
+                                label: item['name'],
+                                value: item['option_id'],
+                                type: item['type'],
+                                option_value: item['option_value']
+                            }
+                        }));
+                    }
+                });
+            },
+            'select': function (item) {
+                html = '<div class="tab-pane" id="tab-option' + option_row + '">';
+                html += '	<input type="hidden" name="product_option[' + option_row + '][product_option_id]" value="" />';
+                html += '	<input type="hidden" name="product_option[' + option_row + '][name]" value="' + item['label'] + '" />';
+                html += '	<input type="hidden" name="product_option[' + option_row + '][option_id]" value="' + item['value'] + '" />';
+                html += '	<input type="hidden" name="product_option[' + option_row + '][type]" value="' + item['type'] + '" />';
+
+                html += '	<div class="form-group">';
+                html += '	  <label class="col-sm-2 control-label" for="input-required' + option_row + '">{{ entry_required }}</label>';
+                html += '	  <div class="col-sm-10"><select name="product_option[' + option_row + '][required]" id="input-required' + option_row + '" class="form-control">';
+                html += '	      <option value="1">{{ text_yes }}</option>';
+                html += '	      <option value="0">{{ text_no }}</option>';
+                html += '	  </select></div>';
+                html += '	</div>';
+
+                if (item['type'] == 'text') {
+                    html += '	<div class="form-group">';
+                    html += '	  <label class="col-sm-2 control-label" for="input-value' + option_row + '">{{ entry_option_value }}</label>';
+                    html += '	  <div class="col-sm-10"><input type="text" name="product_option[' + option_row + '][value]" value="" placeholder="{{ entry_option_value }}" id="input-value' + option_row + '" class="form-control" /></div>';
+                    html += '	</div>';
+                }
+
+                if (item['type'] == 'textarea') {
+                    html += '	<div class="form-group">';
+                    html += '	  <label class="col-sm-2 control-label" for="input-value' + option_row + '">{{ entry_option_value }}</label>';
+                    html += '	  <div class="col-sm-10"><textarea name="product_option[' + option_row + '][value]"  placeholder="{{ entry_option_value }}" id="input-value' + option_row + '" class="form-control"></textarea></div>';
+                    html += '	</div>';
+                }
+
+                if (item['type'] == 'file') {
+                    html += '	<div class="form-group" style="display: none;">';
+                    html += '	  <label class="col-sm-2 control-label" for="input-value' + option_row + '">{{ entry_option_value }}</label>';
+                    html += '	  <div class="col-sm-10"><input type="text" name="product_option[' + option_row + '][value]" value="" placeholder="{{ entry_option_value }}" id="input-value' + option_row + '" class="form-control" /></div>';
+                    html += '	</div>';
+                }
+
+                if (item['type'] == 'date') {
+                    html += '	<div class="form-group">';
+                    html += '	  <label class="col-sm-2 control-label" for="input-value' + option_row + '">{{ entry_option_value }}</label>';
+                    html += '	  <div class="col-sm-3"><div class="input-group date"><input type="text" name="product_option[' + option_row + '][value]" value="" placeholder="{{ entry_option_value }}" data-date-format="YYYY-MM-DD" id="input-value' + option_row + '" class="form-control" /><span class="input-group-btn"><button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button></span></div></div>';
+                    html += '	</div>';
+                }
+
+                if (item['type'] == 'time') {
+                    html += '	<div class="form-group">';
+                    html += '	  <label class="col-sm-2 control-label" for="input-value' + option_row + '">{{ entry_option_value }}</label>';
+                    html += '	  <div class="col-sm-10"><div class="input-group time"><input type="text" name="product_option[' + option_row + '][value]" value="" placeholder="{{ entry_option_value }}" data-date-format="HH:mm" id="input-value' + option_row + '" class="form-control" /><span class="input-group-btn"><button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button></span></div></div>';
+                    html += '	</div>';
+                }
+
+                if (item['type'] == 'datetime') {
+                    html += '	<div class="form-group">';
+                    html += '	  <label class="col-sm-2 control-label" for="input-value' + option_row + '">{{ entry_option_value }}</label>';
+                    html += '	  <div class="col-sm-10"><div class="input-group datetime"><input type="text" name="product_option[' + option_row + '][value]" value="" placeholder="{{ entry_option_value }}" data-date-format="YYYY-MM-DD HH:mm" id="input-value' + option_row + '" class="form-control" /><span class="input-group-btn"><button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button></span></div></div>';
+                    html += '	</div>';
+                }
+
+                if (item['type'] == 'select' || item['type'] == 'radio' || item['type'] == 'checkbox' || item['type'] == 'image') {
+                    html += '<div class="table-responsive">';
+                    html += '  <table id="option-value' + option_row + '" class="table table-striped table-bordered table-hover">';
+                    html += '  	 <thead>';
+                    html += '      <tr>';
+                    html += '        <td class="text-left">{{ entry_option_value }}</td>';
+                    html += '        <td class="text-right">{{ entry_quantity }}</td>';
+                    html += '        <td class="text-left">{{ entry_subtract }}</td>';
+                    html += '        <td class="text-right">{{ entry_price }}</td>';
+                    html += '        <td class="text-right">{{ entry_option_points }}</td>';
+                    html += '        <td class="text-right">{{ entry_weight }}</td>';
+                    html += '        <td></td>';
+                    html += '      </tr>';
+                    html += '  	 </thead>';
+                    html += '  	 <tbody>';
+                    html += '    </tbody>';
+                    html += '    <tfoot>';
+                    html += '      <tr>';
+                    html += '        <td colspan="6"></td>';
+                    html += '        <td class="text-left"><button type="button" onclick="addOptionValue(' + option_row + ');" data-toggle="tooltip" title="{{ button_option_value_add }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i></button></td>';
+                    html += '      </tr>';
+                    html += '    </tfoot>';
+                    html += '  </table>';
+                    html += '</div>';
+
+                    html += '  <select id="option-values' + option_row + '" style="display: none;">';
+
+                    for (i = 0; i < item['option_value'].length; i++) {
+                        html += '  <option value="' + item['option_value'][i]['option_value_id'] + '">' + item['option_value'][i]['name'] + '</option>';
+                    }
+
+                    html += '  </select>';
+                    html += '</div>';
+                }
+
+                $('#tab-option .tab-content').append(html);
+
+                $('#option > li:last-child').before('<li><a href="#tab-option' + option_row + '" data-toggle="tab"><i class="fa fa-minus-circle" onclick=" $(\'#option a:first\').tab(\'show\');$(\'a[href=\\\'#tab-option' + option_row + '\\\']\').parent().remove(); $(\'#tab-option' + option_row + '\').remove();"></i>' + item['label'] + '</li>');
+
+                $('#option a[href=\'#tab-option' + option_row + '\']').tab('show');
+
+                $('[data-toggle=\'tooltip\']').tooltip({
+                    container: 'body',
+                    html: true
+                });
+
+                $('.date').datetimepicker({
+                    language: '{{ datepicker }}',
+                    pickTime: false
+                });
+
+                $('.time').datetimepicker({
+                    language: '{{ datepicker }}',
+                    pickDate: false
+                });
+
+                $('.datetime').datetimepicker({
+                    language: '{{ datepicker }}',
+                    pickDate: true,
+                    pickTime: true
+                });
+
+                option_row++;
+            }
+        });
+        //--></script>
+    <script type="text/javascript"><!--
+        var option_value_row = {{ option_value_row }};
+
+        function addOptionValue(option_row) {
+            html = '<tr id="option-value-row' + option_value_row + '">';
+            html += '  <td class="text-left"><select name="product_option[' + option_row + '][product_option_value][' + option_value_row + '][option_value_id]" class="form-control">';
+            html += $('#option-values' + option_row).html();
+            html += '  </select><input type="hidden" name="product_option[' + option_row + '][product_option_value][' + option_value_row + '][product_option_value_id]" value="" /></td>';
+            html += '  <td class="text-right"><input type="text" name="product_option[' + option_row + '][product_option_value][' + option_value_row + '][quantity]" value="" placeholder="{{ entry_quantity }}" class="form-control" /></td>';
+            html += '  <td class="text-left"><select name="product_option[' + option_row + '][product_option_value][' + option_value_row + '][subtract]" class="form-control">';
+            html += '    <option value="1">{{ text_yes }}</option>';
+            html += '    <option value="0">{{ text_no }}</option>';
+            html += '  </select></td>';
+            html += '  <td class="text-right"><select name="product_option[' + option_row + '][product_option_value][' + option_value_row + '][price_prefix]" class="form-control">';
+            html += '    <option value="+">+</option>';
+            html += '    <option value="-">-</option>';
+            html += '  </select>';
+            html += '  <input type="text" name="product_option[' + option_row + '][product_option_value][' + option_value_row + '][price]" value="" placeholder="{{ entry_price }}" class="form-control" /></td>';
+            html += '  <td class="text-right"><select name="product_option[' + option_row + '][product_option_value][' + option_value_row + '][points_prefix]" class="form-control">';
+            html += '    <option value="+">+</option>';
+            html += '    <option value="-">-</option>';
+            html += '  </select>';
+            html += '  <input type="text" name="product_option[' + option_row + '][product_option_value][' + option_value_row + '][points]" value="" placeholder="{{ entry_points }}" class="form-control" /></td>';
+            html += '  <td class="text-right"><select name="product_option[' + option_row + '][product_option_value][' + option_value_row + '][weight_prefix]" class="form-control">';
+            html += '    <option value="+">+</option>';
+            html += '    <option value="-">-</option>';
+            html += '  </select>';
+            html += '  <input type="text" name="product_option[' + option_row + '][product_option_value][' + option_value_row + '][weight]" value="" placeholder="{{ entry_weight }}" class="form-control" /></td>';
+            html += '  <td class="text-left"><button type="button" onclick="$(this).tooltip(\'destroy\');$(\'#option-value-row' + option_value_row + '\').remove();" data-toggle="tooltip" rel="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+            html += '</tr>';
+
+            $('#option-value' + option_row + ' tbody').append(html);
+            $('[rel=tooltip]').tooltip();
+
+            option_value_row++;
+        }
+
+        //--></script>
+    <script type="text/javascript"><!--
+        var discount_row = {{ discount_row }};
+
+        function addDiscount() {
+            html = '<tr id="discount-row' + discount_row + '">';
+            html += '  <td class="text-left"><select name="product_discount[' + discount_row + '][customer_group_id]" class="form-control">';
+            {% for customer_group in customer_groups %}
+            html += '    <option value="{{ customer_group.customer_group_id }}">{{ customer_group.name|escape('js') }}</option>';
+            {% endfor %}
+            html += '  </select></td>';
+            html += '  <td class="text-right"><input type="text" name="product_discount[' + discount_row + '][quantity]" value="" placeholder="{{ entry_quantity }}" class="form-control" /></td>';
+            html += '  <td class="text-right"><input type="text" name="product_discount[' + discount_row + '][priority]" value="" placeholder="{{ entry_priority }}" class="form-control" /></td>';
+            html += '  <td class="text-right"><input type="text" name="product_discount[' + discount_row + '][price]" value="" placeholder="{{ entry_price }}" class="form-control" /></td>';
+            html += '  <td class="text-left" style="width: 20%;"><div class="input-group date"><input type="text" name="product_discount[' + discount_row + '][date_start]" value="" placeholder="{{ entry_date_start }}" data-date-format="YYYY-MM-DD" class="form-control" /><span class="input-group-btn"><button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button></span></div></td>';
+            html += '  <td class="text-left" style="width: 20%;"><div class="input-group date"><input type="text" name="product_discount[' + discount_row + '][date_end]" value="" placeholder="{{ entry_date_end }}" data-date-format="YYYY-MM-DD" class="form-control" /><span class="input-group-btn"><button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button></span></div></td>';
+            html += '  <td class="text-left"><button type="button" onclick="$(\'#discount-row' + discount_row + '\').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+            html += '</tr>';
+
+            $('#discount tbody').append(html);
+
+            $('.date').datetimepicker({
+                pickTime: false
+            });
+
+            discount_row++;
+        }
+
+        //--></script>
+    <script type="text/javascript"><!--
+        var special_row = {{ special_row }};
+
+        function addSpecial() {
+            html = '<tr id="special-row' + special_row + '">';
+            html += '  <td class="text-left"><select name="product_special[' + special_row + '][customer_group_id]" class="form-control">';
+            {% for customer_group in customer_groups %}
+            html += '      <option value="{{ customer_group.customer_group_id }}">{{ customer_group.name|escape('js') }}</option>';
+            {% endfor %}
+            html += '  </select></td>';
+            html += '  <td class="text-right"><input type="text" name="product_special[' + special_row + '][priority]" value="" placeholder="{{ entry_priority }}" class="form-control" /></td>';
+            html += '  <td class="text-right"><input type="text" name="product_special[' + special_row + '][price]" value="" placeholder="{{ entry_price }}" class="form-control" /></td>';
+            html += '  <td class="text-left" style="width: 20%;"><div class="input-group date"><input type="text" name="product_special[' + special_row + '][date_start]" value="" placeholder="{{ entry_date_start }}" data-date-format="YYYY-MM-DD" class="form-control" /><span class="input-group-btn"><button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button></span></div></td>';
+            html += '  <td class="text-left" style="width: 20%;"><div class="input-group date"><input type="text" name="product_special[' + special_row + '][date_end]" value="" placeholder="{{ entry_date_end }}" data-date-format="YYYY-MM-DD" class="form-control" /><span class="input-group-btn"><button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button></span></div></td>';
+            html += '  <td class="text-left"><button type="button" onclick="$(\'#special-row' + special_row + '\').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+            html += '</tr>';
+
+            $('#special tbody').append(html);
+
+            $('.date').datetimepicker({
+                language: '{{ datepicker }}',
+                pickTime: false
+            });
+
+            special_row++;
+        }
+
+        //--></script>
+    <script language="javascript" type="text/javascript">
+        $(function () {
+            $("#input-categoryId").change(function () {
+                var get_data_value = $(this).children('option:selected').attr("data-value");
+                $("#input-categorys").val(get_data_value);
+                //var p1=$(this).children('option:selected').val();//这就是selected的值
+                //var p2=$('#param2').val();//获取本页面其他标签的值
+                //window.location.href="xx.php?param1="+p1+"¶m2="+p2+"";//页面跳转并传参
+            })
+        })
+    </script>
+
+
+    <script type="text/javascript">
+
+        $('button[type=submit]').click(function (event) {
+
+            $('.source-input').prop('value', function (i, val) {
+                if (!val) {
+                    $(this).val($(this).attr('data-value'));
+                }
+            });
+        });
+
+    </script>
+
+    <script type="text/javascript"><!--
+        var image_row = {{ image_row }};
+
+        function addImage() {
+            html = '<tr id="image-row' + image_row + '">';
+            html += '  <td class="text-left"><a href="" id="thumb-image' + image_row + '"data-toggle="image" class="img-thumbnail"><img src="{{ placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a><input type="hidden" name="product_image[' + image_row + '][image]" value="" id="input-image' + image_row + '" /></td>';
+            html += '  <td class="text-right"><input type="text" name="product_image[' + image_row + '][sort_order]" value="" placeholder="{{ entry_sort_order }}" class="form-control" /></td>';
+            html += '  <td class="text-left"><button type="button" onclick="$(\'#image-row' + image_row + '\').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+            html += '</tr>';
+
+            $('#images tbody').append(html);
+
+            image_row++;
+        }
+
+        //--></script>
+    <script type="text/javascript"><!--
+        var recurring_row = {{ recurring_row }};
+
+        function addRecurring() {
+            html = '<tr id="recurring-row' + recurring_row + '">';
+            html += '  <td class="left">';
+            html += '    <select name="product_recurring[' + recurring_row + '][recurring_id]" class="form-control">>';
+            {% for recurring in recurrings %}
+            html += '      <option value="{{ recurring.recurring_id }}">{{ recurring.name }}</option>';
+            {% endfor %}
+            html += '    </select>';
+            html += '  </td>';
+            html += '  <td class="left">';
+            html += '    <select name="product_recurring[' + recurring_row + '][customer_group_id]" class="form-control">>';
+            {% for customer_group in customer_groups %}
+            html += '      <option value="{{ customer_group.customer_group_id }}">{{ customer_group.name }}</option>';
+            {% endfor %}
+            html += '    <select>';
+            html += '  </td>';
+            html += '  <td class="left">';
+            html += '    <a onclick="$(\'#recurring-row' + recurring_row + '\').remove()" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></a>';
+            html += '  </td>';
+            html += '</tr>';
+
+            $('#tab-recurring table tbody').append(html);
+
+            recurring_row++;
+        }
+
+        //--></script>
+    <script type="text/javascript"><!--
+        $('.date').datetimepicker({
+            language: '{{ datepicker }}',
+            pickTime: false
+        });
+
+        $('.time').datetimepicker({
+            language: '{{ datepicker }}',
+            pickDate: false
+        });
+
+        $('.datetime').datetimepicker({
+            language: '{{ datepicker }}',
+            pickDate: true,
+            pickTime: true
+        });
+        //--></script>
+    <script type="text/javascript"><!--
+        $('#language a:first').tab('show');
+        $('#option a:first').tab('show');
+        //--></script>
+
+        //script for table sorting
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+  $(document).ready(function() {
+    $('#attribute tbody').sortable({
+      items: 'tr',
+      start: function(event, ui) {
+        ui.item.data('start-index', ui.item.index());
+      },
+      update: function(event, ui) {
+        var fromIndex = ui.item.data('start-index');
+        var toIndex = ui.item.index();
+
+        // Update input names for sortable rows
+        $('#attribute tbody tr').each(function(index) {
+          var row = $(this);
+          // var inputField = row.find('td:nth-child(2) input');
+          // var currentName = inputField.attr('name');
+          // var newName = currentName.replace(/\[\d+\]/, '[' + (index + 1) + ']');
+          // inputField.attr('name', newName);
+          //
+          // inputField = row.find('td:nth-child(3) input');
+          // currentName = inputField.attr('name');
+          // newName = currentName.replace(/\[\d+\]/, '[' + (index + 1) + ']');
+          // inputField.attr('name', newName);
+
+          inputField = row.find('td:nth-child(4) input');// add foreach
+          currentName = inputField.attr('name');
+          newName = currentName.replace(/^(product_attribute\[)\d+(\].*)$/,'$1'+(index+1)+'$2');
+          inputField.attr('name', newName);
+
+          inputField = row.find('td:nth-child(5) textarea');
+          currentName = inputField.attr('name');
+          newName = currentName.replace(/\[\d+\]/, '[' + (index + 1) + ']');
+          inputField.attr('name', newName);
+
+          // Update display name of column 2 based on sequence
+          var displayName = row.find('td:nth-child(2) input').val();
+          var newDisplayName = displayName.replace(/\d+/, index + 1);
+          row.find('td:nth-child(2) input').val(newDisplayName);
+
+          // Update product_attribute value
+          var productAttributeInput = row.find('td:first-child input');
+          var productAttributeValue = index === 0 ? 1 : index + 1;
+          productAttributeInput.val(productAttributeValue);
+
+          // Update title and source attributes
+          var languageInputs = row.find('.source-input');
+          languageInputs.each(function() {
+            var languageInput = $(this);
+            var languageId = languageInput.attr('name').match(/\[(\d+)\]/)[1];
+            var titleValue = languageInput.attr('data-value');
+            var newTitleValue = titleValue.replace(/\d+/, index + 1);
+            languageInput.attr('value', newTitleValue);
+          });
+        });
+
+        console.log(
+          'Selected Row: ' +
+            ui.item.find('td:first-child').text() +
+            ', From: ' +
+            fromIndex +
+            ', To: ' +
+            toIndex
+        );
+      },
+    });
+
+    $('.sortable-row').sortable({
+      items: '.sortable-row',
+      axis: 'y',
+      start: function(event, ui) {
+        ui.item.data('start-index', ui.item.index());
+      },
+      update: function(event, ui) {
+        var fromIndex = ui.item.data('start-index');
+        var toIndex = ui.item.index();
+
+        console.log(
+          'Selected Box: ' +
+            ui.item.find('td:nth-child(2) input').attr('placeholder') +
+            ', From: ' +
+            fromIndex +
+            ', To: ' +
+            toIndex
+        );
+      },
+    });
+  });
+</script>
+
+<!--script end-->
+</div>
+<style>
+    #tab-option ul#option ul.dropdown-menu li {
+        float: left;
+        width: 195px;
+    }
+
+    #tab-option ul#option ul.dropdown-menu {
+        width: 1000px;
+    }
+</style>
+{{ footer }}
