@@ -21,22 +21,38 @@
   <tbody>
     <tr>
       <td class="sortable-row">Row 1</td>
-      <td class="sortable-row"><input name="option_attribute[1][name]" value="http://www.google.com/"></td>
+      <td class="sortable-row">
+        <div><input name="option_attribute[1][name][1]" class="form-control source-input" value="http://www.google1.com/" ></div>
+        <div><input name="option_attribute[1][name][2]" class="form-control source-input" value="http://www.google2.com/" ></div>
+        <div><input name="option_attribute[1][name][3]" class="form-control source-input" value="http://www.google3.com/" ></div>
+      </td>
       <td class="sortable-row"><input name="option_attribute[1][status]" value="1"></td>
     </tr>
     <tr>
       <td class="sortable-row">Row 2</td>
-      <td class="sortable-row"><input name="option_attribute[2][name]" value="http://www.yahoo.com/"></td>
+      <td class="sortable-row">
+        <div><input name="option_attribute[2][name][1]" class="form-control source-input" value="http://www.yahoo1.com/"></div>
+        <div><input name="option_attribute[2][name][2]" class="form-control source-input" value="http://www.yahoo2.com/"></div>
+        <div><input name="option_attribute[2][name][3]" class="form-control source-input" value="http://www.yahoo3.com/"></div>
+      </td>
       <td class="sortable-row"><input name="option_attribute[2][status]" value="1"></td>
     </tr>
     <tr>
       <td class="sortable-row">Row 3</td>
-      <td class="sortable-row"><input name="option_attribute[3][name]" value="http://www.facebook.com/"></td>
+      <td class="sortable-row">
+        <div><input name="option_attribute[3][name][1]" class="form-control source-input" value="http://www.facebook1.com/"><br /></div>
+        <div><input name="option_attribute[3][name][2]" class="form-control source-input" value="http://www.facebook2.com/"><br /></div>
+        <div><input name="option_attribute[3][name][3]" class="form-control source-input" value="http://www.facebook3.com/"><br /></div>
+      </td>
       <td class="sortable-row"><input name="option_attribute[3][status]" value="0"></td>
     </tr>
     <tr>
       <td class="sortable-row">Row 4</td>
-      <td class="sortable-row"><input name="option_attribute[4][name]" value="http://www.instagram.com/"></td>
+      <td class="sortable-row">
+        <div><input name="option_attribute[4][name][1]" class="form-control source-input" value="http://www.instagram1.com/"><br /></div>
+        <div><input name="option_attribute[4][name][2]" class="form-control source-input" value="http://www.instagram2.com/"><br /></div>
+        <div><input name="option_attribute[4][name][3]" class="form-control source-input" value="http://www.instagram3.com/"><br /></div>
+      </td>
       <td class="sortable-row"><input name="option_attribute[4][status]" value="0"></td>
     </tr>
   </tbody>
@@ -59,15 +75,33 @@
         // Update input names for sortable rows
         $("#myTable tbody tr").each(function(index) {
            var row = $(this);
-          var inputField = row.find("td:nth-child(2)").find("input");
-          var currentName = inputField.attr("name");
-          var newName = currentName.replace(/\[\d+\]/, "[" + (index + 1) + "]");
-          inputField.attr("name", newName);
+
+          // var inputField = row.find("td:nth-child(2)").find("input");
+          // var currentName = inputField.attr("name");
+          // var newName = currentName.replace(/\[\d+\]/, "[" + (index + 1) + "]");
+          // inputField.attr("name", newName);
 
           var inputField = row.find("td:nth-child(3)").find("input");
           var currentName = inputField.attr("name");
           var newName = currentName.replace(/\[\d+\]/, "[" + (index + 1) + "]");
           inputField.attr("name", newName);
+
+
+          var titleInputs = row.find(".source-input");
+
+        // Update the input values based on the row index
+        titleInputs.each(function() {
+          var currentName = $(this).attr("name");
+          var newName = currentName.replace(/\[\d+\]/, "[" + (index + 1) + "]");
+          inputField.attr("name", newName);
+
+        var languageId = $(this).attr("name").match(/\[(\d+)\]/)[1];
+        
+        // Update Simplified Chinese and English inputs
+        if (languageId === "1" || languageId === "2") {
+          $(this).val("Source " + (index + 1));
+        }
+      });
 
 
           // Update display name of column 2 based on sequence
