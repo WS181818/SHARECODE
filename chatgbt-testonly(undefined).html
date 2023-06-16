@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sortable Table</title>
+    <style>
+      table {
+        border-collapse: collapse;
+      }
+      td {
+        border: 1px solid black;
+        padding: 5px;
+      }
+      .sortable-row td:first-child {
+        background-color: lightgray;
+      }
+    </style>
+  </head>
+  <body>
+    <form method="post" action="chatgbt-testonly.html">
+      <table id="myTable">
+        <tbody>
+          <tr>
+            <td class="sortable-row">Row 1</td>
+            <td class="sortable-row">
+              <div>
+                <input
+                  name="option_attribute[1][name][1]"
+                  class="form-control source-input"
+                  value="http://www.google1.com/"
+                />
+              </div>
+              <div>
+                <input
+                  name="option_attribute[1][name][2]"
+                  class="form-control source-input"
+                  value="http://www.google2.com/"
+                />
+              </div>
+              <div>
+                <input
+                  name="option_attribute[1][name][3]"
+                  class="form-control source-input"
+                  value="http://www.google3.com/"
+                />
+              </div>
+            </td>
+            <td class="sortable-row">
+              <input name="option_attribute[1][status]" value="1" />
+            </td>
+          </tr>
+          <tr>
+            <td class="sortable-row">Row 2</td>
+            <td class="sortable-row">
+              <div>
+                <input
+                  name="option_attribute[2][name][1]"
+                  class="form-control source-input"
+                  value="http://www.yahoo1.com/"
+                />
+              </div>
+              <div>
+                <input
+                  name="option_attribute[2][name][2]"
+                  class="form-control source-input"
+                  value="http://www.yahoo2.com/"
+                />
+              </div>
+              <div>
+                <input
+                  name="option_attribute[2][name][3]"
+                  class="form-control source-input"
+                  value="http://www.yahoo3.com/"
+                />
+              </div>
+            </td>
+            <td class="sortable-row">
+              <input name="option_attribute[2][status]" value="1" />
+            </td>
+          </tr>
+          <tr>
+            <td class="sortable-row">Row 3</td>
+            <td class="sortable-row">
+              <div>
+                <input
+                  name="option_attribute[3][name][1]"
+                  class="form-control source-input"
+                  value="http://www.facebook1.com/"
+                /><br />
+              </div>
+              <div>
+                <input
+                  name="option_attribute[3][name][2]"
+                  class="form-control source-input"
+                  value="http://www.facebook2.com/"
+                /><br />
+              </div>
+              <div>
+                <input
+                  name="option_attribute[3][name][3]"
+                  class="form-control source-input"
+                  value="http://www.facebook3.com/"
+                /><br />
+              </div>
+            </td>
+            <td class="sortable-row">
+              <input name="option_attribute[3][status]" value="0" />
+            </td>
+          </tr>
+          <tr>
+            <td class="sortable-row">Row 4</td>
+            <td class="sortable-row">
+              <div>
+                <input
+                  name="option_attribute[4][name][1]"
+                  class="form-control source-input"
+                  value="http://www.instagram1.com/"
+                /><br />
+              </div>
+              <div>
+                <input
+                  name="option_attribute[4][name][2]"
+                  class="form-control source-input"
+                  value="http://www.instagram2.com/"
+                /><br />
+              </div>
+              <div>
+                <input
+                  name="option_attribute[4][name][3]"
+                  class="form-control source-input"
+                  value="http://www.instagram3.com/"
+                /><br />
+              </div>
+            </td>
+            <td class="sortable-row">
+              <input name="option_attribute[4][status]" value="0" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <button type="submit">Submit</button>
+    </form>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#myTable tbody").sortable({
+          items: "tr",
+          start: function (event, ui) {
+            ui.item.data("start-index", ui.item.index());
+            ui.item.data("start-x", getXValues(ui.item));
+          },
+          update: function (event, ui) {
+            var fromIndex = ui.item.data("start-index");
+            var toIndex = ui.item.index();
+            var draggedRowX = ui.item.data("start-x");
+            var destinationRow = ui.item.prev();
+            var destinationRowX = getXValues(destinationRow);
+
+            // Swap x values between dragged row and destination row
+            setXValues(ui.item, destinationRowX);
+            setXValues(destinationRow, draggedRowX);
+
+            console.log(
+              "Selected Row: " +
+                ui.item.find("td:first-child").text() +
+                ", From: " +
+                fromIndex +
+                ", To: " +
+                toIndex
+            );
+          },
+        });
+
+        // Rest of the code...
+
+        function getXValues(row) {
+          var inputs = row.find("td:nth-child(2)").find("input");
+          var xValues = [];
+          inputs.each(function () {
+            var currentName = $(this).attr("name");
+            var xValue = currentName.match(/\[(\d+)\]/)[1];
+            xValues.push(xValue);
+          });
+          return xValues;
+        }
+
+        function setXValues(row, newXValues) {
+          var inputs = row.find("td:nth-child(2)").find("input");
+          inputs.each(function (index) {
+            var inputField = $(this);
+            var currentName = inputField.attr("name");
+            var newName = currentName.replace(
+              /\[\d+\]/,
+              "[" + newXValues[index] + "]"
+            );
+            inputField.attr("name", newName);
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
