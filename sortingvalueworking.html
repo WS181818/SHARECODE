@@ -168,65 +168,45 @@
                         $('#myTable tbody tr').each(function (index) {
                             var row = $(this)
 
-                            // Update input names
-                            var inputField3 = row
-                                .find('td:nth-child(3)')
-                                .find('input')
-                            var currentName = inputField3.attr('name')
-                            var newName = currentName.replace(
-                                /\[\d+\]/,
-                                '[' + (index + 1) + ']'
-                            )
-                            inputField3.attr('name', newName)
-
-                            var titleInputs = row.find('.source-input')
-
-                            // Update input values and display sequence
-                            titleInputs.each(function () {
-                                var currentItem = $(this)
-                                var currentName = $(this).attr('name')
-
+                            // Update input names and values
+                            var divContainers = row.find('td:nth-child(2) div')
+                            divContainers.each(function (divIndex) {
+                                var div = $(this)
+                                var inputField = div.find('input')
+                                var currentName = inputField.attr('name')
                                 var newName = currentName.replace(
                                     /\[\d+\]/,
                                     '[' + (index + 1) + ']'
                                 )
-                                currentItem.attr('name', newName)
+                                inputField.attr('name', newName)
 
-                                var languageId = $(this)
-                                    .attr('name')
-                                    .match(/\[(\d+)\]/)[1]
-
-                                // Update input value with sequence number for the first two inputs
-                                if (languageId === '1' || languageId === '2') {
-                                    var currentValue = currentItem.val()
-                                    var newValue = currentValue.replace(
-                                        /(\D*)(\d+)/,
-                                        '$11'
-                                    )
-                                    currentItem.val(newValue)
-                                }
+                                var currentValue = inputField.val()
+                                var newValue = currentValue.replace(
+                                    /(\D*)(\d+)/,
+                                    '$1' + (index + 1)
+                                )
+                                inputField.val(newValue)
                             })
 
                             // Update display name of column 2 based on sequence
                             var displayName = row
-                                .find('td:nth-child(2)')
-                                .find('input')
+                                .find('td:nth-child(2) div:first-child input')
                                 .val()
                             var newDisplayName = displayName.replace(
                                 /\d+/,
                                 index + 1
                             )
-                            row.find('td:nth-child(2)')
-                                .find('input')
-                                .val(newDisplayName)
+                            row.find(
+                                'td:nth-child(2) div:first-child input'
+                            ).val(newDisplayName)
                         })
 
-                        // // Sort the remaining rows based on the new positions
-                        // var remainingRows = $('#myTable tbody tr').slice(2)
-                        // remainingRows.sort(function (a, b) {
-                        //     return $(a).index() - $(b).index()
-                        // })
-                        // $('#myTable tbody').append(remainingRows)
+                        // Sort the remaining rows based on the new positions
+                        var remainingRows = $('#myTable tbody tr').slice(2)
+                        remainingRows.sort(function (a, b) {
+                            return $(a).index() - $(b).index()
+                        })
+                        $('#myTable tbody').append(remainingRows)
 
                         console.log(
                             'Selected Row: ' +
@@ -239,19 +219,6 @@
                     },
                 })
             })
-
-            function updateInputNameAttribute($this, $no) {
-                var row = $this
-                var inputField = row
-                    .find('td:nth-child(' + $no + ')')
-                    .find('input')
-                var currentName = inputField.attr('name')
-                var newName = currentName.replace(
-                    /\[\d+\]/,
-                    '[' + (index + 1) + ']'
-                )
-                inputField.attr('name', newName)
-            }
         </script>
     </body>
 </html>
