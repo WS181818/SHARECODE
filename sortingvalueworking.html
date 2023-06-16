@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Sortable Table</title>
+        <style>
+            table {
+                border-collapse: collapse;
+            }
+            td {
+                border: 1px solid black;
+                padding: 5px;
+            }
+            .sortable-row td:first-child {
+                background-color: lightgray;
+            }
+        </style>
+    </head>
+    <body>
+        <form method="post" action="chatgbt-testonly.html">
+            <table id="myTable">
+                <tbody>
+                    <tr>
+                        <td class="sortable-row">Row 1</td>
+                        <td class="sortable-row">
+                            <div>
+                                <input
+                                    name="option_attribute[1][name][1]"
+                                    class="form-control source-input"
+                                    value="source 1"
+                                />
+                            </div>
+                            <div>
+                                <input
+                                    name="option_attribute[1][name][2]"
+                                    class="form-control source-input"
+                                    value="源 1"
+                                />
+                            </div>
+                            <div>
+                                <input
+                                    name="option_attribute[1][name][3]"
+                                    class="form-control source-input"
+                                    value="Sumber 1"
+                                />
+                            </div>
+                        </td>
+                        <td class="sortable-row">
+                            <input
+                                name="option_attribute[1][status]"
+                                value="1"
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sortable-row">Row 2</td>
+                        <td class="sortable-row">
+                            <div>
+                                <input
+                                    name="option_attribute[2][name][1]"
+                                    class="form-control source-input"
+                                    value="source 2"
+                                />
+                            </div>
+                            <div>
+                                <input
+                                    name="option_attribute[2][name][2]"
+                                    class="form-control source-input"
+                                    value="源 2"
+                                />
+                            </div>
+                            <div>
+                                <input
+                                    name="option_attribute[2][name][3]"
+                                    class="form-control source-input"
+                                    value="Sumber 2"
+                                />
+                            </div>
+                        </td>
+                        <td class="sortable-row">
+                            <input
+                                name="option_attribute[2][status]"
+                                value="1"
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sortable-row">Row 3</td>
+                        <td class="sortable-row">
+                            <div>
+                                <input
+                                    name="option_attribute[3][name][1]"
+                                    class="form-control source-input"
+                                    value="Source 3"
+                                /><br />
+                            </div>
+                            <div>
+                                <input
+                                    name="option_attribute[3][name][2]"
+                                    class="form-control source-input"
+                                    value="源 3"
+                                /><br />
+                            </div>
+                            <div>
+                                <input
+                                    name="option_attribute[3][name][3]"
+                                    class="form-control source-input"
+                                    value="Sumber 3"
+                                /><br />
+                            </div>
+                        </td>
+                        <td class="sortable-row">
+                            <input
+                                name="option_attribute[3][status]"
+                                value="0"
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sortable-row">Row 4</td>
+                        <td class="sortable-row">
+                            <div>
+                                <input
+                                    name="option_attribute[4][name][1]"
+                                    class="form-control source-input"
+                                    value="Source 4"
+                                /><br />
+                            </div>
+                            <div>
+                                <input
+                                    name="option_attribute[4][name][2]"
+                                    class="form-control source-input"
+                                    value="源 4"
+                                /><br />
+                            </div>
+                            <div>
+                                <input
+                                    name="option_attribute[4][name][3]"
+                                    class="form-control source-input"
+                                    value="Sumber 4"
+                                /><br />
+                            </div>
+                        </td>
+                        <td class="sortable-row">
+                            <input
+                                name="option_attribute[4][status]"
+                                value="0"
+                            />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="submit">Submit</button>
+        </form>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#myTable tbody').sortable({
+                    items: 'tr',
+                    start: function (event, ui) {
+                        ui.item.data('start-index', ui.item.index())
+                    },
+                    update: function (event, ui) {
+                        var fromIndex = ui.item.data('start-index')
+                        var toIndex = ui.item.index()
+
+                        // Update input names and values for sortable rows
+                        $('#myTable tbody tr').each(function (index) {
+                            var row = $(this)
+
+                            // Update input names
+                            var inputField3 = row
+                                .find('td:nth-child(3)')
+                                .find('input')
+                            var currentName = inputField3.attr('name')
+                            var newName = currentName.replace(
+                                /\[\d+\]/,
+                                '[' + (index + 1) + ']'
+                            )
+                            inputField3.attr('name', newName)
+
+                            var titleInputs = row.find('.source-input')
+
+                            // Update input values and display sequence
+                            titleInputs.each(function () {
+                                var currentItem = $(this)
+                                var currentName = $(this).attr('name')
+
+                                var newName = currentName.replace(
+                                    /\[\d+\]/,
+                                    '[' + (index + 1) + ']'
+                                )
+                                currentItem.attr('name', newName)
+
+                                var languageId = $(this)
+                                    .attr('name')
+                                    .match(/\[(\d+)\]/)[1]
+
+                                // Update input value with sequence number for the first two inputs
+                                if (languageId === '1' || languageId === '2') {
+                                    var currentValue = currentItem.val()
+                                    var newValue = currentValue.replace(
+                                        /(\D*)(\d+)/,
+                                        '$11'
+                                    )
+                                    currentItem.val(newValue)
+                                }
+                            })
+
+                            // Update display name of column 2 based on sequence
+                            var displayName = row
+                                .find('td:nth-child(2)')
+                                .find('input')
+                                .val()
+                            var newDisplayName = displayName.replace(
+                                /\d+/,
+                                index + 1
+                            )
+                            row.find('td:nth-child(2)')
+                                .find('input')
+                                .val(newDisplayName)
+                        })
+
+                        // // Sort the remaining rows based on the new positions
+                        // var remainingRows = $('#myTable tbody tr').slice(2)
+                        // remainingRows.sort(function (a, b) {
+                        //     return $(a).index() - $(b).index()
+                        // })
+                        // $('#myTable tbody').append(remainingRows)
+
+                        console.log(
+                            'Selected Row: ' +
+                                ui.item.find('td:first-child').text() +
+                                ', From: ' +
+                                fromIndex +
+                                ', To: ' +
+                                toIndex
+                        )
+                    },
+                })
+            })
+
+            function updateInputNameAttribute($this, $no) {
+                var row = $this
+                var inputField = row
+                    .find('td:nth-child(' + $no + ')')
+                    .find('input')
+                var currentName = inputField.attr('name')
+                var newName = currentName.replace(
+                    /\[\d+\]/,
+                    '[' + (index + 1) + ']'
+                )
+                inputField.attr('name', newName)
+            }
+        </script>
+    </body>
+</html>
