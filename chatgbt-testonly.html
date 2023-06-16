@@ -76,32 +76,30 @@
         $("#myTable tbody tr").each(function(index) {
            var row = $(this);
 
-          // var inputField = row.find("td:nth-child(2)").find("input");
-          // var currentName = inputField.attr("name");
-          // var newName = currentName.replace(/\[\d+\]/, "[" + (index + 1) + "]");
-          // inputField.attr("name", newName);
 
-          var inputField = row.find("td:nth-child(3)").find("input");
-          var currentName = inputField.attr("name");
+          var inputField3 = row.find("td:nth-child(3)").find("input");
+          console.log(inputField3.attr("name"));
+          var currentName = inputField3.attr("name");
           var newName = currentName.replace(/\[\d+\]/, "[" + (index + 1) + "]");
-          inputField.attr("name", newName);
-
+          inputField3.attr("name", newName);
 
           var titleInputs = row.find(".source-input");
 
         // Update the input values based on the row index
         titleInputs.each(function() {
+          var currentItem = $(this);
           var currentName = $(this).attr("name");
-          var newName = currentName.replace(/\[\d+\]/, "[" + (index + 1) + "]");
-          inputField.attr("name", newName);
 
-        var languageId = $(this).attr("name").match(/\[(\d+)\]/)[1];
-        
-        // Update Simplified Chinese and English inputs
-        if (languageId === "1" || languageId === "2") {
-          $(this).val("Source " + (index + 1));
-        }
-      });
+          var newName = currentName.replace(/\[\d+\]/, "[" + (index + 1) + "]");
+            currentItem.attr("name", newName);
+
+            var languageId = $(this).attr("name").match(/\[(\d+)\]/)[1];
+
+            // Update Simplified Chinese and English inputs
+            if (languageId === "1" || languageId === "2") {
+              $(this).val("Source " + (index + 1));
+            }
+        });
 
 
           // Update display name of column 2 based on sequence
@@ -115,19 +113,6 @@
       }
     });
 
-    $(".sortable-row").sortable({
-      items: ".sortable-row",
-      axis: "y",
-      start: function(event, ui) {
-        ui.item.data('start-index', ui.item.index());
-      },
-      update: function(event, ui) {
-        var fromIndex = ui.item.data('start-index');
-        var toIndex = ui.item.index();
-
-        console.log("Selected Box: " + ui.item.find("td:nth-child(2)").find("input").attr("placeholder") + ", From: " + fromIndex + ", To: " + toIndex);
-      }
-    });
   });
 
   function updateInputNameAttribute($this, $no)
