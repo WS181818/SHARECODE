@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sortable Table</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        td {
+            border: 1px solid black;
+            padding: 5px;
+        }
+        .sortable-row td:first-child {
+            background-color: lightgray;
+        }
+    </style>
+</head>
+<body>
+<form method="post" action="chatgbt-testonly.html">
+    <table id="myTable">
+        <tbody>
+        <tr>
+            <td class="sortable-row">
+                <div class="radio radio-info">
+                    <input type="radio" id="status-radio-on-1"
+                           value="1"
+                           name="product_attribute[1][status]" checked>
+                    <label for="status-radio-on-1"> 上架 </label>
+                </div>
+                <div class="radio">
+                    <input type="radio" id="status-radio-off-1"
+                           value="0"
+                           name="product_attribute[1][status]">
+                    <label for="status-radio-off-1"> 下架 </label>
+                </div>
+            </td>
+            <td class="sortable-row">
+                <div class="radio radio-info">
+                    <input type="radio" id="is_rotation-radio-on-1"
+                           value="1"
+                           name="product_attribute[1][is_rotation]"
+                           checked>
+                    <label for="is_rotation-radio-on-1"> 是 </label>
+                </div>
+                <div class="radio">
+                    <input type="radio" id="is_rotation-radio-off-1"
+                           value="0"
+                           name="product_attribute[1][is_rotation]">
+                    <label for="is_rotation-radio-off-1">
+                        否
+                    </label>
+                </div>
+            </td>
+            <td class="sortable-row">
+                <div>
+                    <input
+                            name="option_attribute[2][name][1]"
+                            class="form-control source-input"
+                            value="source 1"
+                    />
+                </div>
+                <div>
+                    <input
+                            name="option_attribute[2][name][2]"
+                            class="form-control source-input"
+                            value="源 1"
+                    />
+                </div>
+                <div>
+                    <input
+                            name="option_attribute[2][name][3]"
+                            class="form-control source-input"
+                            value="Sumber 1"
+                    />
+                </div>
+            </td>
+            <td class="sortable-row">
+                <input
+                        name="option_attribute[1][status]"
+                        value="1"
+                />
+            </td>
+        </tr>
+        <tr>
+            <td class="sortable-row">
+                <div class="radio radio-info">
+                    <input type="radio" id="status-radio-on-2"
+                           value="1"
+                           name="product_attribute[2][status]" checked>
+                    <label
+                            for="status-radio-on-2"
+                    >
+                        上架
+                    </label>
+                </div>
+                <div class="radio">
+                    <input type="radio" id="status-radio-off-2"
+                           value="0"
+                           name="product_attribute[2][status]">
+                    <label for="status-radio-off-2"> 下架 </label>
+                </div>
+            </td>
+            <td class="sortable-row">
+                <div class="radio radio-info">
+                    <input type="radio" id="is_rotation-radio-on-2"
+                           value="1"
+                           name="product_attribute[2][is_rotation]">
+                    <label for="is_rotation-radio-on-2"> 是 </label>
+                </div>
+                <div class="radio">
+                    <input type="radio" id="is_rotation-radio-off-2"
+                           value="0"
+                           name="product_attribute[2][is_rotation]"
+                           checked>
+                    <label for="is_rotation-radio-off-2">
+                        否
+                    </label>
+                </div>
+            </td>
+            <td class="sortable-row">
+                <div>
+                    <input
+                            name="option_attribute[3][name][1]"
+                            class="form-control source-input"
+                            value="source 2"
+                    />
+                </div>
+                <div>
+                    <input
+                            name="option_attribute[3][name][2]"
+                            class="form-control source-input"
+                            value="源 2"
+                    />
+                </div>
+                <div>
+                    <input
+                            name="option_attribute[3][name][3]"
+                            class="form-control source-input"
+                            value="Sumber 2"
+                    />
+                </div>
+            </td>
+            <td class="sortable-row">
+                <input
+                        name="option_attribute[3][status]"
+                        value="0"
+                />
+            </td>
+        </tr>
+        <tr>
+            <td class="sortable-row">
+                <div class="radio radio-info">
+                    <input type="radio" id="status-radio-on-3"
+                           value="1"
+                           name="product_attribute[3][status]">
+                    <label for="status-radio-on-3"> 上架 </label>
+                </div>
+                <div class="radio">
+                    <input type="radio" id="status-radio-off-3"
+                           value="0"
+                           name="product_attribute[3][status]" checked>
+                    <label for="status-radio-off-3"> 下架 </label>
+                </div>
+            </td>
+            <td class="sortable-row">
+                <div class="radio radio-info">
+                    <input type="radio" id="is_rotation-radio-on-3"
+                           value="1"
+                           name="product_attribute[3][is_rotation]"
+                           checked>
+                    <label for="is_rotation-radio-on-3"> 是 </label>
+                </div>
+                <div class="radio">
+                    <input type="radio" id="is_rotation-radio-off-3"
+                           value="0"
+                           name="product_attribute[3][is_rotation]">
+                    <label for="is_rotation-radio-off-3">
+                        否
+                    </label>
+                </div>
+            </td>
+            <td class="sortable-row">
+                <div>
+                    <input
+                            name="option_attribute[4][name][1]"
+                            class="form-control source-input"
+                            value="source 3"
+                    />
+                </div>
+                <div>
+                    <input
+                            name="option_attribute[4][name][2]"
+                            class="form-control source-input"
+                            value="源 3"
+                    />
+                </div>
+                <div>
+                    <input
+                            name="option_attribute[4][name][3]"
+                            class="form-control source-input"
+                            value="Sumber 3"
+                    />
+                </div>
+            </td>
+            <td class="sortable-row">
+                <input
+                        name="option_attribute[4][status]"
+                        value="1"
+                />
+            </td>
+        </tr>
+        <tr>
+            <td class="sortable-row">
+                <div class="radio radio-info">
+                    <input type="radio" id="status-radio-on-4"
+                           value="1"
+                           name="product_attribute[4][status]">
+                    <label
+                            for="status-radio-on-4"
+                    >
+                        上架
+                    </label>
+                </div>
+                <div class="radio">
+                    <input type="radio" id="status-radio-off-4"
+                           value="0"
+                           name="product_attribute[4][status]" checked>
+                    <label for="status-radio-off-4"> 下架 </label>
+                </div>
+            </td>
+            <td class="sortable-row">
+                <div class="radio radio-info">
+                    <input type="radio" id="is_rotation-radio-on-4"
+                           value="1"
+                           name="product_attribute[4][is_rotation]" >
+                    <label for="is_rotation-radio-on-4"> 是 </label>
+                </div>
+                <div class="radio">
+                    <input type="radio" id="is_rotation-radio-4"
+                           value="0"
+                           name="product_attribute[4][is_rotation]"
+                           checked>
+                    <label for="is_rotation-radio-4">
+                        否
+                    </label>
+                </div>
+            </td>
+            <td class="sortable-row">
+                <div>
+                    <input
+                            name="option_attribute[4][name][1]"
+                            class="form-control source-input"
+                            value="source 4"
+                    />
+                </div>
+                <div>
+                    <input
+                            name="option_attribute[4][name][2]"
+                            class="form-control source-input"
+                            value="源 4"
+                    />
+                </div>
+                <div>
+                    <input
+                            name="option_attribute[4][name][3]"
+                            class="form-control source-input"
+                            value="Sumber 4"
+                    />
+                </div>
+            </td>
+            <td class="sortable-row">
+                <input
+                        name="option_attribute[4][status]"
+                        value="0"
+                />
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <button type="submit">Submit</button>
+</form>
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#myTable tbody').sortable({
+            items: 'tr',
+            start: function (event, ui) {
+                ui.item.data('start-index', ui.item.index())
+            },
+            update: function (event, ui) {
+                var fromIndex = ui.item.data('start-index')
+                var toIndex = ui.item.index()
+
+
+                // Update input names and values for sortable rows
+                $('#myTable tbody tr').each(function (index) {
+                    var row = $(this)
+
+                    // Update input names and values for radio inputs
+                    var radioInputs = row.find(
+                        "td:nth-child(1) input[type='radio']"
+                    )
+
+                    radioInputs.each(function () {
+
+                        var radioInput = $(this)
+                        var currentName = radioInput.attr('name')
+
+                        // Preserve checked state
+                        var isChecked = radioInput.is(':checked')
+                        console.log(
+                            '*bf' + currentName + ', radioInput checked: ' + radioInput[0].checked
+                        )
+
+                        var newName = currentName.replace(
+                            /\[\d+\]/,
+                            '[' + (index + 1) + ']'
+                        )
+                        radioInput.attr('name', newName)
+                        console.log(
+                            '*af' + newName + ', radioInput checked: ' + radioInput[0].checked
+                        )
+
+                        if (isChecked) {
+                            //radioInput[0].checked = isChecked
+                            radioInput.prop('checked', isChecked)
+                            radioInput.next('label').addClass('checked', isChecked)
+                        }else{
+                            radioInput.prop('checked', isChecked)
+                            radioInput.next('label').addClass('checked', isChecked)
+                        }
+                    })
+
+                    // Update input names and values for radio inputs
+                    var radioInputs = row.find(
+                        "td:nth-child(2) input[type='radio']"
+                    )
+                    radioInputs.each(function () {
+                        var radioInput = $(this)
+                        var currentName = radioInput.attr('name')
+                        var newName = currentName.replace(
+                            /\[\d+\]/,
+                            '[' + (index + 1) + ']'
+                        )
+                        radioInput.attr('name', newName)
+
+                        // Preserve checked state
+                        var isChecked = radioInput.is(':checked')
+                        if (isChecked) {
+                            console.log(
+                                'radioInput: ' + radioInput[0].checked
+                            )
+                            radioInput[0].checked = true
+                            radioInput.prop('checked', true)
+                            radioInput.next('label').addClass('checked')
+                        }
+                    })
+
+                    var inputField3 = row
+                        .find('td:nth-child(3)')
+                        .find('input')
+                    console.log(inputField3.attr('name'))
+                    var currentName = inputField3.attr('name')
+                    var newName = currentName.replace(
+                        /\[\d+\]/,
+                        '[' + (index + 1) + ']'
+                    )
+                    inputField3.attr('name', currentName)
+
+                    // Update input names and values
+                    var divContainers = row.find('td:nth-child(4) div')
+                    divContainers.each(function (divIndex) {
+                        var div = $(this)
+                        var inputField = div.find('input')
+                        var currentName = inputField.attr('name')
+                        var newName = currentName.replace(
+                            /\[\d+\]/,
+                            '[' + (index + 1) + ']'
+                        )
+                        inputField.attr('name', newName)
+
+                        var currentValue = inputField.val()
+                        var newValue = currentValue.replace(
+                            /(\D*)(\d+)/,
+                            '$1' + (index + 1)
+                        )
+                        inputField.val(newValue)
+                    })
+
+                    // Update display name of column 2 based on sequence
+                    var displayName = row
+                        .find('td:nth-child(4) input')
+                        .val()
+                    var newDisplayName = displayName.replace(
+                        /\d+/,
+                        index + 1
+                    )
+                    /*row.find(
+                        'td:nth-child(2) div:first-child input'
+                    ).val(newDisplayName)
+                    */
+                })
+
+                // Sort the remaining rows based on the new positions
+                var remainingRows = $('#myTable tbody tr').slice(2)
+                remainingRows.sort(function (a, b) {
+                    return $(a).index() - $(b).index()
+                })
+                $('#myTable tbody').append(remainingRows)
+
+                console.log(
+                    'Selected Row: ' +
+                    ui.item.find('td:first-child').text() +
+                    ', From: ' +
+                    fromIndex +
+                    ', To: ' +
+                    toIndex
+                )
+            },
+        })
+    })
+</script>
+<script>
+    // Get all radio buttons with the class "radio"
+    const radioButtons = document.querySelectorAll(
+        '.radio input[type="radio"]'
+    )
+
+    // Add an event listener to each radio button
+    radioButtons.forEach((radioButton) => {
+        radioButton.addEventListener('change', function () {
+            // Get the form data and the name of the radio button
+            const formData = new FormData(
+                document.querySelector('form')
+            )
+            const radioButtonName = this.name
+
+            // Get the value of the selected radio button
+            const radioButtonValue = this.value
+
+            // Update the form data with the new value
+            formData.set(radioButtonName, radioButtonValue)
+
+            // Submit the form data to the server
+            fetch('/update-product-attribute', {
+                method: 'POST',
+                body: formData,
+            })
+                .then((response) => {
+                    // Handle the response from the server
+                    console.log(response)
+                })
+                .catch((error) => {
+                    // Handle any errors that occur during the request
+                    console.error(error)
+                })
+        })
+    })
+</script>
+</body>
+</html>
