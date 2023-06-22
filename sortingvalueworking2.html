@@ -58,21 +58,21 @@
                         <td class="sortable-row">
                             <div>
                                 <input
-                                    name="option_attribute[2][name][1]"
+                                    name="option_attribute[1][name][1]"
                                     class="form-control source-input"
                                     value="source 1"
                                 />
                             </div>
                             <div>
                                 <input
-                                    name="option_attribute[2][name][2]"
+                                    name="option_attribute[1][name][2]"
                                     class="form-control source-input"
                                     value="源 1"
                                 />
                             </div>
                             <div>
                                 <input
-                                    name="option_attribute[2][name][3]"
+                                    name="option_attribute[1][name][3]"
                                     class="form-control source-input"
                                     value="Sumber 1"
                                 />
@@ -89,9 +89,9 @@
                         <td class="sortable-row">
                             <div class="radio radio-info">
                                 <input type="radio" id="status-radio-on-2"
-                                value="1" {% if product_attribute.status == 1
-                                %}checked{% endif %}
-                                name="product_attribute[2][status]" checked>
+                                value="1" if product_attribute.status == 1
+                                checke endif name="product_attribute[2][status]"
+                                checked>
                                 <label
                                     for="status-radio-on-{{ attribute_row }}"
                                 >
@@ -100,8 +100,8 @@
                             </div>
                             <div class="radio">
                                 <input type="radio" id="status-radio-off-2"
-                                value="0" {% if product_attribute.status == 0
-                                %}checked{% endif %}
+                                value="0" if product_attribute.status == 0
+                                checke endif
                                 name="product_attribute[2][status]">
                                 <label for="status-radio-off-2"> 下架 </label>
                             </div>
@@ -109,15 +109,15 @@
                         <td class="sortable-row">
                             <div class="radio radio-info">
                                 <input type="radio" id="is_rotation-radio-on-2"
-                                value="1" {% if product_attribute.is_rotation ==
-                                1 %}checked{% endif %}
+                                value="1" if product_attribute.is_rotation == 1
+                                checke endif
                                 name="product_attribute[2][is_rotation]">
                                 <label for="is_rotation-radio-on-2"> 是 </label>
                             </div>
                             <div class="radio">
                                 <input type="radio" id="is_rotation-radio-off-2"
-                                value="0" {% if product_attribute.is_rotation ==
-                                0 %}checked{% endif %}
+                                value="0" if product_attribute.is_rotation == 0
+                                checke endif
                                 name="product_attribute[2][is_rotation]"
                                 checked>
                                 <label for="is_rotation-radio-off-2">
@@ -128,21 +128,21 @@
                         <td class="sortable-row">
                             <div>
                                 <input
-                                    name="option_attribute[3][name][1]"
+                                    name="option_attribute[2][name][1]"
                                     class="form-control source-input"
                                     value="source 2"
                                 />
                             </div>
                             <div>
                                 <input
-                                    name="option_attribute[3][name][2]"
+                                    name="option_attribute[2][name][2]"
                                     class="form-control source-input"
                                     value="源 2"
                                 />
                             </div>
                             <div>
                                 <input
-                                    name="option_attribute[3][name][3]"
+                                    name="option_attribute[2][name][3]"
                                     class="form-control source-input"
                                     value="Sumber 2"
                                 />
@@ -150,7 +150,7 @@
                         </td>
                         <td class="sortable-row">
                             <input
-                                name="option_attribute[3][status]"
+                                name="option_attribute[2][status]"
                                 value="0"
                             />
                         </td>
@@ -159,15 +159,15 @@
                         <td class="sortable-row">
                             <div class="radio radio-info">
                                 <input type="radio" id="status-radio-on-3"
-                                value="1" {% if product_attribute.status == 1
-                                %}checked{% endif %}
+                                value="1" if product_attribute.status == 1
+                                checked endif
                                 name="product_attribute[3][status]">
                                 <label for="status-radio-on-3"> 上架 </label>
                             </div>
                             <div class="radio">
                                 <input type="radio" id="status-radio-off-3"
-                                value="0" {% if product_attribute.status == 0
-                                %}checked{% endif %}
+                                value="0" if product_attribute.status == 0
+                                checked endif
                                 name="product_attribute[3][status]" checked>
                                 <label for="status-radio-off-3"> 下架 </label>
                             </div>
@@ -175,16 +175,16 @@
                         <td class="sortable-row">
                             <div class="radio radio-info">
                                 <input type="radio" id="is_rotation-radio-on-3"
-                                value="1" {% if product_attribute.is_rotation ==
-                                1 %}checked{% endif %}
+                                value="1" if product_attribute.is_rotation == 1
+                                checked endif
                                 name="product_attribute[3][is_rotation]"
                                 checked>
                                 <label for="is_rotation-radio-on-3"> 是 </label>
                             </div>
                             <div class="radio">
                                 <input type="radio" id="is_rotation-radio-off-3"
-                                value="0" {% if product_attribute.is_rotation ==
-                                0 %}checked{% endif %}
+                                value="0" if product_attribute.is_rotation == 0
+                                checked endif
                                 name="product_attribute[3][is_rotation]">
                                 <label for="is_rotation-radio-off-3">
                                     否
@@ -194,21 +194,21 @@
                         <td class="sortable-row">
                             <div>
                                 <input
-                                    name="option_attribute[4][name][1]"
+                                    name="option_attribute[3][name][1]"
                                     class="form-control source-input"
                                     value="source 3"
                                 />
                             </div>
                             <div>
                                 <input
-                                    name="option_attribute[4][name][2]"
+                                    name="option_attribute[3][name][2]"
                                     class="form-control source-input"
                                     value="源 3"
                                 />
                             </div>
                             <div>
                                 <input
-                                    name="option_attribute[4][name][3]"
+                                    name="option_attribute[3][name][3]"
                                     class="form-control source-input"
                                     value="Sumber 3"
                                 />
@@ -216,7 +216,7 @@
                         </td>
                         <td class="sortable-row">
                             <input
-                                name="option_attribute[4][status]"
+                                name="option_attribute[3][status]"
                                 value="1"
                             />
                         </td>
@@ -224,10 +224,12 @@
                     <tr>
                         <td class="sortable-row">
                             <div class="radio radio-info">
-                                <input type="radio" id="status-radio-on-4"
-                                value="1" {% if product_attribute.status == 1
-                                %}checked{% endif %}
-                                name="product_attribute[4][status]">
+                                <input
+                                    type="radio"
+                                    id="status-radio-on-4"
+                                    value="1"
+                                    name="product_attribute[4][status]"
+                                />
                                 <label
                                     for="status-radio-on-{{ attribute_row }}"
                                 >
@@ -236,8 +238,8 @@
                             </div>
                             <div class="radio">
                                 <input type="radio" id="status-radio-off-4"
-                                value="0" {% if product_attribute.status == 0
-                                %}checked{% endif %}
+                                value="0" if product_attribute.status == 0
+                                checked endif
                                 name="product_attribute[4][status]" checked>
                                 <label for="status-radio-off-4"> 下架 </label>
                             </div>
@@ -245,15 +247,15 @@
                         <td class="sortable-row">
                             <div class="radio radio-info">
                                 <input type="radio" id="is_rotation-radio-on-4"
-                                value="1" {% if product_attribute.is_rotation ==
-                                1 %}checked{% endif %}
+                                value="1" if product_attribute.is_rotation == 1
+                                checked endif
                                 name="product_attribute[4][is_rotation]" >
                                 <label for="is_rotation-radio-on-4"> 是 </label>
                             </div>
                             <div class="radio">
                                 <input type="radio" id="is_rotation-radio-4"
-                                value="0" {% if product_attribute.is_rotation ==
-                                0 %}checked{% endif %}
+                                value="0" if product_attribute.is_rotation == 0
+                                checked endif
                                 name="product_attribute[4][is_rotation]"
                                 checked>
                                 <label for="is_rotation-radio-off-4">
@@ -309,58 +311,69 @@
                         var toIndex = ui.item.index()
 
                         // Update input names and values for radio inputs
-                        var radioInputs = row.find(
-                            "td:nth-child() input[type='radio']"
-                        )
-                        radioInputs.each(function () {
-                            var radioInput = $(this)
-                            var currentName = radioInput.attr('name')
-                            var newName = currentName.replace(
-                                /\[\d+\]/,
-                                '[' + (index + 1) + ']'
-                            )
-                            radioInput.attr('name', newName)
-
-                            // Preserve checked state
-                            var isChecked = radioInput.is(':checked')
-                            if (isChecked) {
-                                console.log(
-                                    'radioInput: ' + radioInput[0].checked
-                                )
-                                radioInput[0].checked = true
-                                radioInput.prop('checked', true)
-                                radioInput.next('label').addClass('checked')
-                            }
-                        })
-
-                        // Update input names and values for radio inputs
-                        var radioInputs = row.find(
-                            "td:nth-child(2) input[type='radio']"
-                        )
-                        radioInputs.each(function () {
-                            var radioInput = $(this)
-                            var currentName = radioInput.attr('name')
-                            var newName = currentName.replace(
-                                /\[\d+\]/,
-                                '[' + (index + 1) + ']'
-                            )
-                            radioInput.attr('name', newName)
-
-                            // Preserve checked state
-                            var isChecked = radioInput.is(':checked')
-                            if (isChecked) {
-                                console.log(
-                                    'radioInput: ' + radioInput[0].checked
-                                )
-                                radioInput[0].checked = true
-                                radioInput.prop('checked', true)
-                                radioInput.next('label').addClass('checked')
-                            }
-                        })
-
-                        // Update input names and values for sortable rows
-                        $('#myTable tbody tr').each(function (index) {
+                        $('#attribute tbody tr').each(function (index) {
                             var row = $(this)
+
+                            var inputField1 = row
+                                .find('td:nth-child(1)')
+                                .find('input')
+                            console.log(inputField1.attr('name'))
+                            var currentName = inputField1.attr('name')
+                            var newName = currentName.replace(
+                                /\[\d+\]/,
+                                '[' + (index + 1) + ']'
+                            )
+                            inputField1.attr('name', newName)
+
+                            //update input names and values for radio inputs
+                            var radioInputs = row.find(
+                                "td:nth-child(1) input[type='radio']"
+                            )
+                            radioInputs.each(function () {
+                                var radioInput = $(this)
+                                var currentName = radioInput.attr('name')
+                                var newName = currentName.replace(
+                                    /\[\d+\]/,
+                                    '[' + (index + 1) + ']'
+                                )
+                                radioInput.attr('name', newName)
+
+                                // Preserve checked state
+                                var isChecked = radioInput.is(':checked')
+                                if (isChecked) {
+                                    console.log(
+                                        'radioInput: ' + radioInput[0].checked
+                                    )
+                                    radioInput[0].checked = true
+                                    radioInput.prop('checked', true)
+                                    radioInput.next('label').addClass('checked')
+                                }
+                            })
+
+                            // Update input names and values for radio inputs
+                            var radioInputs = row.find(
+                                "td:nth-child(2) input[type='radio']"
+                            )
+                            radioInputs.each(function () {
+                                var radioInput = $(this)
+                                var currentName = radioInput.attr('name')
+                                var newName = currentName.replace(
+                                    /\[\d+\]/,
+                                    '[' + (index + 1) + ']'
+                                )
+                                radioInput.attr('name', newName)
+
+                                // Preserve checked state
+                                var isChecked = radioInput.is(':checked')
+                                if (isChecked) {
+                                    console.log(
+                                        'radioInput: ' + radioInput[0].checked
+                                    )
+                                    radioInput[0].checked = true
+                                    radioInput.prop('checked', true)
+                                    radioInput.next('label').addClass('checked')
+                                }
+                            })
 
                             var inputField3 = row
                                 .find('td:nth-child(3)')
@@ -402,64 +415,76 @@
                                 index + 1
                             )
                             /*row.find(
-                                'td:nth-child(2) div:first-child input'
-                            ).val(newDisplayName)
-                            */
+                                        'td:nth-child(2) div:first-child input'
+                                    ).val(newDisplayName)
+                                    */
                         })
 
-                        // Sort the remaining rows based on the new positions
-                        var remainingRows = $('#myTable tbody tr').slice(2)
-                        remainingRows.sort(function (a, b) {
-                            return $(a).index() - $(b).index()
-                        })
-                        $('#myTable tbody').append(remainingRows)
+                        // Update input names and values for sortable rows
+                        $('#myTable tbody tr').each(function (index) {
+                            var row = $(this)
 
-                        console.log(
-                            'Selected Row: ' +
-                                ui.item.find('td:first-child').text() +
-                                ', From: ' +
-                                fromIndex +
-                                ', To: ' +
-                                toIndex
-                        )
+                            var inputField3 = row
+                                .find('td:nth-child(3)')
+                                .find('input')
+                            console.log(inputField3.attr('name'))
+                            var currentName = inputField3.attr('name')
+                            var newName = currentName.replace(
+                                /\[\d+\]/,
+                                '[' + (index + 1) + ']'
+                            )
+                            inputField3.attr('name', currentName)
+
+                            // Update input names and values
+                            var divContainers = row.find('td:nth-child(4) div')
+                            divContainers.each(function (divIndex) {
+                                var div = $(this)
+                                var inputField = div.find('input')
+                                var currentName = inputField.attr('name')
+                                var newName = currentName.replace(
+                                    /\[\d+\]/,
+                                    '[' + (index + 1) + ']'
+                                )
+                                inputField.attr('name', newName)
+
+                                var currentValue = inputField.val()
+                                var newValue = currentValue.replace(
+                                    /(\D*)(\d+)/,
+                                    '$1' + (index + 1)
+                                )
+                                inputField.val(newValue)
+                            })
+
+                            // // Update display name of column 2 based on sequence
+                            // var displayName = row
+                            //     .find('td:nth-child(4) div:first-child input')
+                            //     .val()
+                            // var newDisplayName = displayName.replace(
+                            //     /\d+/,
+                            //     index + 1
+                            // )
+                            /*row.find(
+                                        'td:nth-child(2) div:first-child input'
+                                    ).val(newDisplayName)
+                                    */
+                        })
+
+                        // // Sort the remaining rows based on the new positions
+                        // var remainingRows = $('#myTable tbody tr').slice(2)
+                        // remainingRows.sort(function (a, b) {
+                        //     return $(a).index() - $(b).index()
+                        // })
+                        // $('#myTable tbody').append(remainingRows)
+
+                        // console.log(
+                        //     'Selected Row: ' +
+                        //         ui.item.find('td:first-child').text() +
+                        //         ', From: ' +
+                        //         fromIndex +
+                        //         ', To: ' +
+                        //         toIndex
+                        // )
                     },
-                })
-            })
-        </script>
-        <script>
-            // Get all radio buttons with the class "radio"
-            const radioButtons = document.querySelectorAll(
-                '.radio input[type="radio"]'
-            )
-
-            // Add an event listener to each radio button
-            radioButtons.forEach((radioButton) => {
-                radioButton.addEventListener('change', function () {
-                    // Get the form data and the name of the radio button
-                    const formData = new FormData(
-                        document.querySelector('form')
-                    )
-                    const radioButtonName = this.name
-
-                    // Get the value of the selected radio button
-                    const radioButtonValue = this.value
-
-                    // Update the form data with the new value
-                    formData.set(radioButtonName, radioButtonValue)
-
-                    // Submit the form data to the server
-                    fetch('/update-product-attribute', {
-                        method: 'POST',
-                        body: formData,
-                    })
-                        .then((response) => {
-                            // Handle the response from the server
-                            console.log(response)
-                        })
-                        .catch((error) => {
-                            // Handle any errors that occur during the request
-                            console.error(error)
-                        })
                 })
             })
         </script>
