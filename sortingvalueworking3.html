@@ -292,7 +292,31 @@
                 var fromIndex = ui.item.data('start-index')
                 var toIndex = ui.item.index()
 
+                // Store the original checked state of radio inputs
+                var originalCheckedState = {};
 
+                $('#myTable tbody tr').each(function (index) {
+                    var row = $(this)
+
+                    var radioInputs = row.find(
+                        "td:nth-child(1) input[type='radio']"
+                    )
+
+                    // Loop through the radio inputs to record the original checked state
+                    //cannot use name as key, because both status is using same name, need to use ID
+                    //status-radio-on-2
+                    radioInputs.each(function () {
+                        var radioInput = $(this);
+                        var inputId = radioInput.attr('id');
+                        originalCheckedState[inputId] = radioInput.is(':checked');
+                    });
+
+                    
+
+                });
+
+
+                //console.log(originalCheckedState);
                 // Update input names and values for sortable rows
                 $('#myTable tbody tr').each(function (index) {
                     var row = $(this)
@@ -306,9 +330,10 @@
 
                         var radioInput = $(this)
                         var currentName = radioInput.attr('name')
+                        var inputId = radioInput.attr('id');
+                        var isChecked = originalCheckedState[inputId];
 
-                        // Preserve checked state
-                        var isChecked = radioInput.is(':checked')
+                        console.log(' originalCheckedState['+inputId+'] ' + isChecked);
                         console.log(
                             '*bf' + currentName + ', radioInput checked: ' + radioInput[0].checked
                         )
@@ -322,14 +347,9 @@
                             '*af' + newName + ', radioInput checked: ' + radioInput[0].checked
                         )
 
-                        if (isChecked) {
-                            //radioInput[0].checked = isChecked
-                            radioInput.prop('checked', isChecked)
-                            radioInput.next('label').addClass('checked', isChecked)
-                        }else{
-                            radioInput.prop('checked', isChecked)
-                            radioInput.next('label').addClass('checked', isChecked)
-                        }
+                        radioInput.prop('checked', isChecked)
+                        radioInput.next('label').addClass('checked', isChecked)
+
                     })
 
                     // Update input names and values for radio inputs
@@ -348,9 +368,6 @@
                         // Preserve checked state
                         var isChecked = radioInput.is(':checked')
                         if (isChecked) {
-                            console.log(
-                                'radioInput: ' + radioInput[0].checked
-                            )
                             radioInput[0].checked = true
                             radioInput.prop('checked', true)
                             radioInput.next('label').addClass('checked')
