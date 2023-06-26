@@ -334,6 +334,42 @@
                         var fromIndex = ui.item.data('start-index')
                         var toIndex = ui.item.index()
 
+                        // Store the original checked state of radio inputs
+                        var originalCheckedState = {}
+
+                        $('#myTable tbody tr').each(function (index) {
+                            var row = $(this)
+
+                            var radioInputs = row.find(
+                                "td:nth-child(1) input[type='radio']"
+                            )
+
+                            // Loop through the radio inputs to record the original checked state
+                            //cannot use name as key, because both status is using same name, need to use ID
+                            //status-radio-on-2
+                            radioInputs.each(function () {
+                                var radioInput = $(this)
+                                var inputId = radioInput.attr('id')
+                                originalCheckedState[inputId] =
+                                    radioInput.is(':checked')
+                            })
+
+                            var radioInputs = row.find(
+                                "td:nth-child(2) input[type='radio']"
+                            )
+
+                            // Loop through the radio inputs to record the original checked state
+                            //cannot use name as key, because both status is using same name, need to use ID
+                            //status-radio-on-2
+                            radioInputs.each(function () {
+                                var radioInput = $(this)
+                                var inputId = radioInput.attr('id')
+                                originalCheckedState[inputId] =
+                                    radioInput.is(':checked')
+                            })
+                        })
+
+                        //console.log(originalCheckedState);
                         // Update input names and values for sortable rows
                         $('#myTable tbody tr').each(function (index) {
                             var row = $(this)
@@ -346,9 +382,15 @@
                             radioInputs.each(function () {
                                 var radioInput = $(this)
                                 var currentName = radioInput.attr('name')
+                                var inputId = radioInput.attr('id')
+                                var isChecked = originalCheckedState[inputId]
 
-                                // Preserve checked state
-                                var isChecked = radioInput.is(':checked')
+                                console.log(
+                                    ' originalCheckedState[' +
+                                        inputId +
+                                        '] ' +
+                                        isChecked
+                                )
                                 console.log(
                                     '*bf' +
                                         currentName +
@@ -367,46 +409,53 @@
                                         ', radioInput checked: ' +
                                         radioInput[0].checked
                                 )
+
+                                radioInput.prop('checked', isChecked)
+                                radioInput
+                                    .next('label')
+                                    .addClass('checked', isChecked)
                             })
 
                             // Update input names and values for radio inputs
                             var radioInputs = row.find(
-                                "td:nth-child(1) input[type='radio']"
-                            )
-                            radioInputs.each(function () {
-                                var radioInput1 = $(this)
-                                var currentName1 = radioInput1.attr('name')
-                                var newName = currentName1.replace(
-                                    /\[\d+\]/,
-                                    '[' + (index + 1) + ']'
-                                )
-                                radioInput1.attr('name', newName)
-
-                                // Preserve checked state
-                                var isChecked = radioInput1.is(':checked')
-                                if (isChecked) {
-                                    console.log(
-                                        'radioInput1: ' + radioInput1[0].checked
-                                    )
-                                    radioInput1[0].checked = true
-                                    radioInput1.prop('checked', true)
-                                    radioInput1
-                                        .next('label')
-                                        .addClass('checked')
-                                }
-                            })
-
-                            var radioInputs = row.find(
                                 "td:nth-child(2) input[type='radio']"
                             )
+
                             radioInputs.each(function () {
-                                var radioInput2 = $(this)
-                                var currentName2 = radioInput2.attr('name')
-                                var newName = currentName2.replace(
+                                var radioInput = $(this)
+                                var currentName = radioInput.attr('name')
+                                var inputId = radioInput.attr('id')
+                                var isChecked = originalCheckedState[inputId]
+
+                                console.log(
+                                    ' originalCheckedState[' +
+                                        inputId +
+                                        '] ' +
+                                        isChecked
+                                )
+                                console.log(
+                                    '*bf' +
+                                        currentName +
+                                        ', radioInput checked: ' +
+                                        radioInput[0].checked
+                                )
+
+                                var newName = currentName.replace(
                                     /\[\d+\]/,
                                     '[' + (index + 1) + ']'
                                 )
-                                radioInput2.attr('name', newName)
+                                radioInput.attr('name', newName)
+                                console.log(
+                                    '*af' +
+                                        newName +
+                                        ', radioInput checked: ' +
+                                        radioInput[0].checked
+                                )
+
+                                radioInput.prop('checked', isChecked)
+                                radioInput
+                                    .next('label')
+                                    .addClass('checked', isChecked)
                             })
 
                             var divContainers = row.find('td:nth-child(3) div')
@@ -428,17 +477,26 @@
                                 inputField3.val(newValue)
                             })
 
-                            // // Update display name of column 4 based on sequence
-                            // var displayName = row
-                            //     .find('td:nth-child(4) input')
-                            //     .val()
-                            // var newDisplayName = displayName.replace(
-                            //     /\d+/,
-                            //     index + 1
-                            // )
-                            // row.find(
-                            //     'td:nth-child(4) div:first-child input'
-                            // ).val(newDisplayName)
+                            //4th column
+                            var inputFields = row.find('td:nth-child(4) input')
+                            inputFields.each(function () {
+                                var inputField = $(this)
+                                var currentName = inputField.attr('name')
+                                var currentValue = inputField.val()
+
+                                // Replace the number inside the brackets with the updated sequence number
+                                var newName = currentName.replace(
+                                    /\[\d+\]/,
+                                    '[' + (index + 1) + ']'
+                                )
+                                var newValue = currentValue.replace(
+                                    /\[\d+\]/,
+                                    '[' + (index + 1) + ']'
+                                )
+
+                                inputField.attr('name', newName)
+                                inputField.val(newValue)
+                            })
                         })
 
                         // Sort the remaining rows based on the new positions
@@ -457,6 +515,43 @@
                                 toIndex
                         )
                     },
+                })
+            })
+        </script>
+        <script>
+            // Get all radio buttons with the class "radio"
+            const radioButtons = document.querySelectorAll(
+                '.radio input[type="radio"]'
+            )
+
+            // Add an event listener to each radio button
+            radioButtons.forEach((radioButton) => {
+                radioButton.addEventListener('change', function () {
+                    // Get the form data and the name of the radio button
+                    const formData = new FormData(
+                        document.querySelector('form')
+                    )
+                    const radioButtonName = this.name
+
+                    // Get the value of the selected radio button
+                    const radioButtonValue = this.value
+
+                    // Update the form data with the new value
+                    formData.set(radioButtonName, radioButtonValue)
+
+                    // Submit the form data to the server
+                    fetch('/update-product-attribute', {
+                        method: 'POST',
+                        body: formData,
+                    })
+                        .then((response) => {
+                            // Handle the response from the server
+                            console.log(response)
+                        })
+                        .catch((error) => {
+                            // Handle any errors that occur during the request
+                            console.error(error)
+                        })
                 })
             })
         </script>
